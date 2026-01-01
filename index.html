@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Descarga 2025 - Verificación Completa</title>
+<style>
+  body {
+    margin: 0;
+    background: #ffffff;
+    font-family: Arial, sans-serif;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 100vh;
+    text-align: center;
+  }
+  h1 { font-size: 22px; margin-bottom: 8px; }
+  p { color: #444; max-width: 340px; margin-bottom: 20px; }
+
+  button, .btn-tres-final {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-size: 17px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin: 5px;
+  }
+
+  /* Estilos específicos para los botones de las etapas */
+  .progress {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin-top: 20px;
+    display: none;
+  }
+  svg { transform: rotate(-90deg); }
+  circle { transition: stroke-dashoffset 0.15s linear; }
+  .text {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .toast {
+    position: fixed; top: 20px; left: 50%;
+    transform: translateX(-50%);
+    background: #007bff; color: #fff;
+    padding: 12px 25px; border-radius: 12px;
+    font-size: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.5s ease; z-index: 9999;
+  }
+  .toast.show { opacity: 1; pointer-events: auto; }
+
+  #adButton { display: none; background: #28a745; }
+  #descarga2025, #finalDownload, #iniciar-temporizador-final, #descarga-legal { display: none; margin-top: 20px; }
+  
+  /* Estilo del botón final (rojo) */
+  #descarga-legal { background: #dc3545; } 
+
+  /* Estilos de la ventana modal (Quest) */
+  .quest-overlay {
+    position: fixed; top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.6); display: none; 
+    justify-content: center; align-items: center; z-index: 9998;
+  }
+  .quest-box {
+    background: #fff; padding: 25px 30px; border-radius: 12px;
+    text-align: center; width: 300px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+  .quest-box input {
+    width: 100%; padding: 10px; margin: 12px 0; border-radius: 8px;
+    border: 1px solid #ccc; font-size: 16px;
+  }
+  .quest-box .error { color: red; font-size: 14px; margin-top: 5px; display: none; }
+
+  /* Estilo para los 7 enlaces (Fase 1) */
+  .btn-anuncio-final {
+    display: block; padding: 10px; margin: 8px auto; max-width: 300px;
+    background-color: #f0f0f0; color: #333; text-decoration: none;
+    text-align: center; border-radius: 8px; transition: background-color 0.3s;
+    border: 1px solid #ccc;
+  }
+  /* Estilo para los 3 botones finales (Fase 3) */
+  .btn-tres-final { background: #5bc0de; }
+
+  /* El estilo clave: cuando ha sido presionado/visto (VERDE) */
+  .btn-anuncio-final.presionado, 
+  #descargas-finales button[data-visto='true'], 
+  .btn-tres-final.presionado { 
+    background-color: #28a745; 
+    color: white;
+    border-color: #28a745;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<h1>Descargar</h1>
+<p>Pulsa en “Descargar ahora” para iniciar la descarga y apoyar al creador.</p>
+<button id="startBtn">Descargar ahora</button>
+
+<div class="progress">
+  <svg width="140" height="140">
+    <circle cx="70" cy="70" r="60" stroke="#eee" stroke-width="10" fill="none"></circle>
+    <circle id="bar" cx="70" cy="70" r="60" stroke="#007bff" stroke-width="10" fill="none" stroke-linecap="round"
+            stroke-dasharray="377" stroke-dashoffset="377"></circle>
+  </svg>
+  <div class="text" id="percent">0%</div>
+</div>
+
+<button id="adButton">Apoyar ahora</button>
+<button id="descarga2025">Descarga 2025</button>
+<button id="finalDownload">Descargar oficial</button>
+
+<div id="toast" class="toast"></div>
+
+<div id="questOverlay" class="quest-overlay">
+  <div class="quest-box">
+    <h3>Completa la palabra</h3>
+    <p>Escribe la palabra: <strong id="questWord"></strong></p>
+    <input type="text" id="userInput" placeholder="Escribe aquí">
+    <div class="error" id="errorMsg">Palabra incorrecta.</div>
+    <p id="attemptsLeft"></p>
+    <button id="submitQuest">Enviar</button>
+  </div>
+</div>
+
+<div id="paso-anuncios-final" style="display: none;">
+    <h3>Fase 1: Pulsa los 7 enlaces para la descarga:</h3>
+    <p id="progreso-final">Progreso: 0/7 enlaces vistos.</p>
+    <div id="contenedor-anuncios-final">
+        <a href="https://otieu.com/4/10022394" target="_blank" class="btn-anuncio-final" data-id="1">Enlace 1</a>
+        <a href="https://otieu.com/4/10022394" target="_blank" class="btn-anuncio-final" data-id="2">Enlace 2</a>
+        <a href="https://otieu.com/4/10022394" target="_blank" class="btn-anuncio-final" data-id="3">Enlace 3</a>
+        <a href="https://otieu.com/4/10022394" target="_blank" class="btn-anuncio-final" data-id="4">Enlace 4</a>
+        <a href="https://otieu.com/4/10022394" target="_blank" class="btn-anuncio-final" data-id="5">Enlace 5</a>
+        <a href="https://otieu.com/4/10022394" target="_blank" class="btn-anuncio-final" data-id="6">Enlace 6</a>
+        <a href="https://otieu.com/4/10022394" target="_blank" class="btn-anuncio-final" data-id="7">Enlace 7</a>
+    </div>
+</div>
+
+<div id="descargas-finales" style="display: none; margin-top: 20px;">
+    <h3>Fase 2: Pulsa los 2 enlaces para continuar:</h3>
+    <button id="btn-final-A" data-link="https://otieu.com/4/10022394">Enlace 8</button>
+    <button id="btn-final-B" data-link="https://otieu.com/4/10022394">Enlace 9</button>
+</div>
+
+<div id="paso-tres-botones" style="display: none; margin-top: 20px;">
+    <h3>Fase 3: Pulsa los 3 enlaces:</h3>
+    <button class="btn-tres-final" data-link="https://otieu.com/4/10022394">Enlace Final 10</button>
+    <button class="btn-tres-final" data-link="https://otieu.com/4/10022394">Enlace Final 11</button>
+    <button class="btn-tres-final" data-link="https://otieu.com/4/10022394">Enlace Final 12</button>
+    <p id="progreso-tres-final">Progreso: 0/3 vistos.</p>
+</div>
+
+<button id="iniciar-temporizador-final" style="display: none;">Descargar ahora oficial</button>
+
+<div class="progress" id="progress-final-timer" style="display: none;">
+  <svg width="140" height="140">
+    <circle cx="70" cy="70" r="60" stroke="#eee" stroke-width="10" fill="none"></circle>
+    <circle id="bar-final" cx="70" cy="70" r="60" stroke="#007bff" stroke-width="10" fill="none" stroke-linecap="round"
+            stroke-dasharray="377" stroke-dashoffset="377"></circle>
+  </svg>
+  <div class="text" id="percent-final">0%</div>
+</div>
+
+<button id="descarga-legal" style="display: none;">Descargar ahora 100% legal</button>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+// ** 🎯 PUNTO CLAVE 1: ENLACE DE ANUNCIO PRINCIPAL **
+const link = "https://otieu.com/4/10022394"; 
+// Asegúrate de que todos los anuncios de tu red usen esta URL.
+
+// ** 🎯 PUNTO CLAVE 2: ENLACE DE DESCARGA FINAL **
+const finalDownloadURL = "https://github.com/steven59999zzzboki-star/Hxh/issues/1"; 
+// ¡REEMPLAZA ESTA URL por tu enlace de descarga real!
+
+// ===================================
+// 1. Elementos y Variables Comunes
+// ===================================
+
+const totalTime = 15; 
+const startBtn = document.getElementById("startBtn");
+const progress = document.querySelector(".progress");
+const bar = document.getElementById("bar");
+const percentText = document.getElementById("percent");
+const toast = document.getElementById("toast");
+const adButton = document.getElementById("adButton");
+const descarga2025 = document.getElementById("descarga2025");
+const finalDownload = document.getElementById("finalDownload");
+
+const pauses = [0, 1, 5, 8, 12]; 
+let elapsed = 0;
+let timer = null;
+let nextPauseIndex = 0;
+
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(()=>toast.classList.remove("show"),3000);
+}
+
+// ===================================
+// 2. Lógica del Temporizador Inicial
+// ===================================
+
+startBtn.addEventListener("click", ()=>{
+  startBtn.style.display = "none";
+  progress.style.display = "block";
+  nextPauseIndex = 1;
+  adButton.style.display = "inline-block";
+  showToast("Pulsa 'Apoyar ahora' para mostrar el anuncio y continuar.");
+});
+
+adButton.addEventListener("click", ()=>{
+  window.open(link, "_blank", "noopener,noreferrer");
+  adButton.style.display = "none";
+  showToast("Gracias por apoyar. Continuando...");
+
+  if (nextPauseIndex < pauses.length) {
+    nextPauseIndex++;
+  } else {
+    nextPauseIndex = pauses.length;
+  }
+  startCountdown();
+});
+
+function startCountdown(){
+  if (timer) return;
+  timer = setInterval(()=>{
+    elapsed += 0.1;
+    const percent = Math.min((elapsed / totalTime) * 100, 100);
+    updateProgress(percent);
+
+    if (nextPauseIndex < pauses.length) {
+      const target = pauses[nextPauseIndex];
+      if (elapsed >= target) {
+        pauseForAd();
+      }
+    }
+
+    if (elapsed >= totalTime) {
+      clearInterval(timer);
+      timer = null;
+      percentText.textContent = "100%";
+      showToast("¡Descarga lista! Pulsa en 'Descarga 2025'");
+      descarga2025.style.display = "inline-block";
+    }
+  }, 100);
+}
+
+function updateProgress(percent){
+  const c = 2 * Math.PI * 60;
+  const offset = c - (percent / 100) * c;
+  bar.style.strokeDashoffset = offset;
+  percentText.textContent = Math.floor(percent) + "%";
+}
+
+function pauseForAd(){
+  if (timer) {
+    clearInterval(timer);
+    timer = null;
+  }
+  adButton.style.display = "inline-block";
+  showToast("Pulsa 'Apoyar ahora' para continuar.");
+}
+
+// ===================================
+// 3. Lógica del Quest (Verificación)
+// ===================================
+
+const questOverlay = document.getElementById("questOverlay");
+const questWordEl = document.getElementById("questWord");
+const userInput = document.getElementById("userInput");
+const errorMsg = document.getElementById("errorMsg");
+const submitQuest = document.getElementById("submitQuest");
+const attemptsLeftEl = document.getElementById("attemptsLeft");
+
+let successfulAttempts = 0;
+const maxAttempts = 5;
+
+descarga2025.addEventListener("click", startQuest);
+
+function startQuest(){
+  generateWord();
+  questOverlay.style.display="flex";
+  userInput.value="";
+  errorMsg.style.display="none";
+  updateAttemptsText();
+}
+
+function generateWord(){
+  const words = ["MONEDA","CREADOR","SUPORTE","DESCARGA","EXITO"];
+  const randomWord = words[Math.floor(Math.random()*words.length)];
+  questWordEl.textContent = randomWord;
+  submitQuest.dataset.correctWord = randomWord;
+}
+
+function updateAttemptsText(){
+  attemptsLeftEl.textContent = `Intentos correctos: ${successfulAttempts} de ${maxAttempts}`;
+}
+
+submitQuest.addEventListener("click", ()=>{
+  const correct = submitQuest.dataset.correctWord;
+  const input = userInput.value.trim().toUpperCase();
+
+  window.open(link,"_blank","noopener,noreferrer"); // Anuncio por cada intento
+
+  if(input !== correct){
+    errorMsg.style.display="block";
+  } else {
+    errorMsg.style.display="none";
+    successfulAttempts++;
+  }
+  
+  if(successfulAttempts >= maxAttempts){
+    questOverlay.style.display="none";
+    showToast("¡Quest completada! Pulsa 'Descargar oficial' para continuar la verificación.");
+    finalDownload.style.display="inline-block";
+  } else {
+    userInput.value="";
+    generateWord();
+    updateAttemptsText();
+  }
+});
+
+// =========================================================
+// 4. LÓGICA DE LA CADENA DE VERIFICACIÓN (7 -> 2 -> 3)
+// =========================================================
+
+// ... (El código de la cadena de verificación no se modificó ya que no fue solicitado) ...
+const pasoAnunciosFinal = document.getElementById("paso-anuncios-final"); 
+const botonesAnuncioFinal = document.querySelectorAll(".btn-anuncio-final"); 
+const progresoFinal = document.getElementById("progreso-final");
+const TOTAL_FINAL_ADS = 7;
+let finalAdsVistos = 0;
+
+const descargasFinales = document.getElementById("descargas-finales");
+const botonesDescargaFinal = document.querySelectorAll('#descargas-finales button');
+let dosAdsVistos = 0;
+
+const pasoTresBotones = document.getElementById("paso-tres-botones");
+const botonesTresFinal = document.querySelectorAll(".btn-tres-final");
+const progresoTresFinal = document.getElementById("progreso-tres-final");
+const TOTAL_TRES_ADS = 3;
+let tresAdsVistos = 0;
+
+// 4.1. Botón "Descargar oficial" (INICIA FASE 1)
+finalDownload.addEventListener("click", ()=>{
+  finalDownload.style.display = "none";
+  pasoAnunciosFinal.style.display = "block";
+  showToast("Fase 1: Haz clic en los 7 enlaces.");
+});
+
+// 4.2. Lógica de los 7 Botones (FASE 1)
+botonesAnuncioFinal.forEach(boton => {
+    boton.addEventListener('click', () => {
+        if (boton.classList.contains('presionado')) return;
+
+        boton.classList.add('presionado');
+        finalAdsVistos++;
+        progresoFinal.textContent = `Progreso: ${finalAdsVistos}/${TOTAL_FINAL_ADS} enlaces vistos.`;
+        window.open(boton.href, "_blank", "noopener,noreferrer"); 
+
+        if (finalAdsVistos === TOTAL_FINAL_ADS) {
+            setTimeout(() => {
+                pasoAnunciosFinal.style.display = 'none';
+                descargasFinales.style.display = 'block';
+                showToast("Fase 2 desbloqueada: ¡Pulsa los 2 enlaces!");
+            }, 500);
+        }
+    });
+});
+
+// 4.3. Lógica de los 2 Botones (FASE 2)
+botonesDescargaFinal.forEach(boton => {
+    boton.addEventListener('click', (e) => {
+        if (boton.dataset.visto) return; 
+
+        boton.dataset.visto = 'true';
+        boton.style.backgroundColor = '#28a745'; 
+        dosAdsVistos++;
+        window.open(boton.dataset.link, "_blank", "noopener,noreferrer"); 
+
+        if (dosAdsVistos === 2) {
+            setTimeout(() => {
+                descargasFinales.style.display = 'none';
+                pasoTresBotones.style.display = 'block';
+                showToast("Fase 3 desbloqueada: ¡Pulsa los 3 enlaces!");
+            }, 500);
+        }
+    })
+});
+
+// 4.4. Lógica de los 3 Botones (FASE 3)
+botonesTresFinal.forEach(boton => {
+    boton.addEventListener('click', () => {
+        if (boton.classList.contains('presionado')) return;
+
+        boton.classList.add('presionado');
+        tresAdsVistos++;
+        progresoTresFinal.textContent = `Progreso: ${tresAdsVistos}/${TOTAL_TRES_ADS} vistos.`;
+        window.open(boton.dataset.link, "_blank", "noopener,noreferrer");
+
+        if (tresAdsVistos === TOTAL_TRES_ADS) {
+            setTimeout(() => {
+                pasoTresBotones.style.display = 'none';
+                iniciarTemporizadorFinal.style.display = 'inline-block';
+                showToast("¡Felicidades! Pulsa 'Descargar ahora oficial' para el temporizador final.");
+            }, 500);
+        }
+    });
+});
+// =========================================================
+// 5. LÓGICA DEL TEMPORIZADOR FINAL Y DESCARGA 100% LEGAL
+// =========================================================
+
+const iniciarTemporizadorFinal = document.getElementById("iniciar-temporizador-final");
+const progressFinalTimer = document.getElementById("progress-final-timer");
+const barFinal = document.getElementById("bar-final");
+const percentFinalText = document.getElementById("percent-final");
+const descargaLegal = document.getElementById("descarga-legal");
+
+const FINAL_TIME = 10;
+const FINAL_ADS_PAUSES = [3, 6]; 
+let finalElapsed = 0;
+let finalTimer = null;
+let finalPauseIndex = 0;
+
+iniciarTemporizadorFinal.addEventListener("click", ()=>{
+    iniciarTemporizadorFinal.style.display = "none";
+    progressFinalTimer.style.display = "block";
+    showToast("Temporizador final iniciado. Espera 10 segundos.");
+    startFinalCountdown();
+});
+
+function updateFinalProgress(percent){
+    const c = 2 * Math.PI * 60;
+    const offset = c - (percent / 100) * c;
+    barFinal.style.strokeDashoffset = offset;
+    percentFinalText.textContent = Math.floor(percent) + "%";
+}
+
+function startFinalCountdown(){
+    if (finalTimer) return;
+    finalTimer = setInterval(()=>{
+        finalElapsed += 0.1;
+        const percent = Math.min((finalElapsed / FINAL_TIME) * 100, 100);
+        updateFinalProgress(percent);
+
+        if (finalPauseIndex < FINAL_ADS_PAUSES.length) {
+            const target = FINAL_ADS_PAUSES[finalPauseIndex];
+            if (finalElapsed >= target) {
+                window.open(link, "_blank", "noopener,noreferrer");
+                showToast(`Anuncio de seguridad: ${finalPauseIndex + 1} de 2`);
+                finalPauseIndex++; 
+            }
+        }
+
+        if (finalElapsed >= FINAL_TIME) {
+            clearInterval(finalTimer);
+            finalTimer = null;
+            percentFinalText.textContent = "100%";
+            progressFinalTimer.style.display = "none";
+            
+            // El botón ya tiene background rojo en el CSS global
+            descargaLegal.style.display = "inline-block";
+            showToast("¡Verificación completada! Pulsa para descargar 100% legal.");
+        }
+    }, 100);
+}
+
+// Lógica del botón de Descarga Final (CORREGIDA)
+descargaLegal.addEventListener("click", ()=>{
+    // 1. Abre el anuncio ANTES de la descarga final
+    window.open(link, "_blank", "noopener,noreferrer"); 
+
+    // 2. Redirige al usuario a la URL de descarga real después de un breve retraso
+    setTimeout(() => {
+        window.location.href = finalDownloadURL; // USANDO LA URL PERSONALIZADA
+    }, 500);
+
+    // 3. ❌ ELIMINADA la línea: descargaLegal.style.display = "none";
+    // El botón AHORA SE MANTIENE VISIBLE, solo redirige.
+    
+    // Opcional: Deshabilitar el botón para evitar múltiples clics
+    descargaLegal.disabled = true;
+    descargaLegal.textContent = "Descarga iniciada...";
+});
+
+}); // Fin del DOMContentLoaded
+</script>
+</body>
+</html>
