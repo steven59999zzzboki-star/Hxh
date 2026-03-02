@@ -1,111 +1,162 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Descarga 2025 - Verificación Completa</title>
-<style>
-  body {
-    margin: 0;
-    background: #ffffff;
-    font-family: Arial, sans-serif;
-    color: #111;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    min-height: 100vh;
-    text-align: center;
-  }
-  h1 { font-size: 22px; margin-bottom: 8px; }
-  p { color: #444; max-width: 340px; margin-bottom: 20px; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Yamil y Steven</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        body { background: #050505; color: #fff; text-align: center; }
+        
+        .header-title { padding: 15px; background: #111; border-bottom: 2px solid #00ff88; color: #00ff88; font-weight: bold; font-size: 1.2rem; }
 
-  button, .btn-tres-final {
-    background: #007bff;
-    color: #fff;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 10px;
-    font-size: 17px;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    margin: 5px;
-  }
+        .navbar { height: 50px; background: #111; border-bottom: 1px solid #222; display: flex; position: sticky; width: 100%; top: 0; z-index: 1000; }
+        .nav-tab { flex: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; color: #555; font-size: 0.8rem; }
+        .nav-tab.active { color: #00ff88; border-bottom: 2px solid #00ff88; background: #161616; }
+        .nav-tab.premium-active { color: #ffcc00; border-bottom: 2px solid #ffcc00; background: #1a1500; }
 
-  /* Estilos específicos para los botones de las etapas */
-  .progress {
-    position: relative;
-    width: 140px;
-    height: 140px;
-    margin-top: 20px;
-    display: none;
-  }
-  svg { transform: rotate(-90deg); }
-  circle { transition: stroke-dashoffset 0.15s linear; }
-  .text {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
-  }
+        .container { padding: 15px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; max-width: 1000px; margin: 20px auto; }
+        .game-card { background: #111; border: 1px solid #222; border-radius: 10px; cursor: pointer; overflow: hidden; }
+        .game-image { width: 100%; height: 110px; object-fit: cover; }
+        .game-info { padding: 8px; font-size: 0.8rem; }
 
-  .toast {
-    position: fixed; top: 20px; left: 50%;
-    transform: translateX(-50%);
-    background: #007bff; color: #fff;
-    padding: 12px 25px; border-radius: 12px;
-    font-size: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.5s ease; z-index: 9999;
-  }
-  .toast.show { opacity: 1; pointer-events: auto; }
+        #step-system { display: none; position: fixed; inset: 0; background: #050505; z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+        .btn-grid { display: grid; gap: 8px; width: 100%; max-width: 260px; }
+        .smart-btn { background: #1a1a1a; border: 1px solid #333; color: #fff; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
+        .smart-btn:disabled { opacity: 0.2; }
 
-  #adButton { display: none; background: #28a745; }
-  #descarga2025, #finalDownload, #iniciar-temporizador-final, #descarga-legal { display: none; margin-top: 20px; }
-  
-  /* Estilo del botón final (rojo) */
-  #descarga-legal { background: #dc3545; } 
+        .progress-circle { position: relative; width: 140px; height: 140px; border-radius: 50%; background: conic-gradient(#00ff88 0%, #222 0%); display: flex; align-items: center; justify-content: center; margin: 15px 0; }
+        .progress-circle::before { content: ""; position: absolute; width: 115px; height: 115px; background: #050505; border-radius: 50%; }
+        .timer-num { position: relative; font-size: 2rem; font-weight: bold; }
 
-  /* Estilos de la ventana modal (Quest) */
-  .quest-overlay {
-    position: fixed; top:0; left:0; right:0; bottom:0;
-    background: rgba(0,0,0,0.6); display: none; 
-    justify-content: center; align-items: center; z-index: 9998;
-  }
-  .quest-box {
-    background: #fff; padding: 25px 30px; border-radius: 12px;
-    text-align: center; width: 300px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-  }
-  .quest-box input {
-    width: 100%; padding: 10px; margin: 12px 0; border-radius: 8px;
-    border: 1px solid #ccc; font-size: 16px;
-  }
-  .quest-box .error { color: red; font-size: 14px; margin-top: 5px; display: none; }
-
-  /* Estilo para los 7 enlaces (Fase 1) */
-  .btn-anuncio-final {
-    display: block; padding: 10px; margin: 8px auto; max-width: 300px;
-    background-color: #f0f0f0; color: #333; text-decoration: none;
-    text-align: center; border-radius: 8px; transition: background-color 0.3s;
-    border: 1px solid #ccc;
-  }
-  /* Estilo para los 3 botones finales (Fase 3) */
-  .btn-tres-final { background: #5bc0de; }
-
-  /* El estilo clave: cuando ha sido presionado/visto (VERDE) */
-  .btn-anuncio-final.presionado, 
-  #descargas-finales button[data-visto='true'], 
-  .btn-tres-final.presionado { 
-    background-color: #28a745; 
-    color: white;
-    border-color: #28a745;
-    pointer-events: none;
-  }
-</style>
+        .back-btn { position: absolute; top: 15px; left: 15px; background: none; border: 1px solid #333; color: #666; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+        .hidden { display: none !important; }
+        code { display: block; background: #000; padding: 15px; border: 1px dashed #00ff88; margin-top: 15px; font-size: 0.7rem; color: #00ff88; word-break: break-all; }
+        .copy-btn { background: #00ff88; color: #000; border: none; padding: 10px; border-radius: 5px; font-weight: bold; margin-top: 10px; width: 100%; max-width: 260px; cursor: pointer; }
+    </style>
 </head>
 <body>
+
+    <div class="header-title">Página de Yamil y Steven</div>
+
+    <nav class="navbar">
+        <div id="tab-free" class="nav-tab active" onclick="showTab('free')">GRATIS</div>
+        <div id="tab-premium" class="nav-tab" onclick="showTab('premium')">PREMIUM ⭐</div>
+    </nav>
+
+    <div id="cont-free" class="container">
+        <div class="game-card" onclick="openSteps('MM2', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/spawnerscript/WymsHub/refs/heads/main/MM2.lua\'))()', 5, 30, false)">
+            <img src="https://i.ibb.co/v6MNsLZT/Screenshot-20260302-140141-Roblox-2.jpg" class="game-image">
+            <div class="game-info"><h3>MM2</h3><p style="color:#00ff88;">Gratis</p></div>
+        </div>
+    </div>
+
+    <div id="cont-premium" class="container hidden">
+        <div class="game-card" style="border-color: #ffcc00;" onclick="openSteps('Rivales PREMIUM', 'loadstring(game:HttpGet(\'https://pastebin.com/raw/aN4VMhvP\'))()', 8, 60, true)">
+            <img src="https://i.ibb.co/k2G6nbnH/Screenshot-20260302-140132-Roblox-2.jpg" class="game-image">
+            <div class="game-info"><h3>Rivales (SÚPER ROTO)</h3><p style="color:#ffcc00;">8 Pasos + Doble Anuncio</p></div>
+        </div>
+        <div class="game-card" style="border-color: #ffcc00;" onclick="openSteps('Duelos PREMIUM', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/Rysted/scripts/main/MurderersVSSheriffs.lua\'))()', 8, 60, true)">
+            <img src="https://i.ibb.co/bgKfP41G/Screenshot-20260302-140119-Roblox-2.jpg" class="game-image">
+            <div class="game-info"><h3>Duelos (ROTÍSIMO)</h3><p style="color:#ffcc00;">8 Pasos + Doble Anuncio</p></div>
+        </div>
+    </div>
+
+    <div id="step-system">
+        <button class="back-btn" onclick="location.reload()">← VOLVER</button>
+        <h2 id="status-label" style="font-size:1rem; color:#00ff88; margin-bottom:15px;">Paso 1</h2>
+        <div id="group-1" class="btn-grid"></div>
+        <div id="group-timer" class="hidden">
+            <div class="progress-circle" id="circle"><span class="timer-num" id="secs">0</span></div>
+            <button id="pause-btn" class="smart-btn hidden" style="background:#00ff88; color:#000;" onclick="resume()">CONTINUAR (Paso 1/2)</button>
+        </div>
+        <div id="final" class="hidden">
+            <h2 style="color:gold; font-size:1.1rem;">¡DESBLOQUEADO!</h2>
+            <code id="script-box"></code>
+            <button class="copy-btn" id="btn-copy" onclick="copyText()">COPIAR SCRIPT</button>
+        </div>
+    </div>
+
+    <script>
+        let clicks = 0, time = 0, maxTime = 0, isPaused = false, timer, currentScript = "", neededClicks = 0, isPremium = false, resumeClicks = 0;
+        const adLink = "TU_SMART_LINK_AQUÍ";
+
+        function showTab(type) {
+            document.getElementById('cont-free').classList.toggle('hidden', type !== 'free');
+            document.getElementById('cont-premium').classList.toggle('hidden', type !== 'premium');
+            document.getElementById('tab-free').className = 'nav-tab' + (type === 'free' ? ' active' : '');
+            document.getElementById('tab-premium').className = 'nav-tab' + (type === 'premium' ? ' premium-active' : '');
+        }
+
+        function openSteps(name, script, clicksNeeded, seconds, premium) {
+            currentScript = script; neededClicks = clicksNeeded; maxTime = seconds; time = seconds; isPremium = premium;
+            document.getElementById('step-system').style.display = 'flex';
+            document.getElementById('status-label').innerText = name;
+            let grid = document.getElementById('group-1'); grid.innerHTML = "";
+            for(let i=1; i<=neededClicks; i++) {
+                grid.innerHTML += `<button class="smart-btn" onclick="handleAd(this)">Abrir Enlace ${i}</button>`;
+            }
+        }
+
+        function handleAd(btn) {
+            btn.disabled = true; window.open(adLink, '_blank'); clicks++;
+            if(clicks >= neededClicks) {
+                document.getElementById('group-1').classList.add('hidden');
+                document.getElementById('group-timer').classList.remove('hidden');
+                startT();
+            }
+        }
+
+        function startT() {
+            document.getElementById('secs').innerText = time;
+            timer = setInterval(() => {
+                if(!isPaused) {
+                    time--;
+                    let p = ((maxTime-time)/maxTime)*100;
+                    document.getElementById('circle').style.background = `conic-gradient(#00ff88 ${p}%, #222 ${p}%)`;
+                    document.getElementById('secs').innerText = time;
+                    if(time % 10 === 0 && time > 0) {
+                        isPaused = true;
+                        resumeClicks = 0;
+                        document.getElementById('secs').classList.add('hidden');
+                        document.getElementById('pause-btn').classList.remove('hidden');
+                        document.getElementById('pause-btn').innerText = isPremium ? "CONTINUAR (Paso 1/2)" : "CONTINUAR";
+                    }
+                    if(time <= 0) {
+                        clearInterval(timer);
+                        document.getElementById('group-timer').classList.add('hidden');
+                        document.getElementById('final').classList.remove('hidden');
+                        document.getElementById('script-box').innerText = currentScript;
+                    }
+                }
+            }, 750);
+        }
+
+        function resume() {
+            window.open(adLink, '_blank');
+            if(isPremium) {
+                resumeClicks++;
+                if(resumeClicks >= 2) {
+                    isPaused = false;
+                    document.getElementById('secs').classList.remove('hidden');
+                    document.getElementById('pause-btn').classList.add('hidden');
+                } else {
+                    document.getElementById('pause-btn').innerText = "CONTINUAR (Paso 2/2)";
+                }
+            } else {
+                isPaused = false;
+                document.getElementById('secs').classList.remove('hidden');
+                document.getElementById('pause-btn').classList.add('hidden');
+            }
+        }
+
+        function copyText() {
+            navigator.clipboard.writeText(currentScript);
+            document.getElementById('btn-copy').innerText = "¡COPIADO!";
+        }
+    </script>
+</body>
+</html>
 
 <h1>Descargar</h1>
 <p>Pulsa en “Descargar ahora” para iniciar la descarga y apoyar al creador.</p>
