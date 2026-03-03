@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El mejor centro de Scripts - Página de Yamil y Steven</title>
+    <title>El mejor centro de Scripts - Steven Studio</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
         body { background: #050505; color: #fff; text-align: center; }
@@ -15,12 +15,22 @@
         .nav-tab.active { color: #00ff88; border-bottom: 2px solid #00ff88; background: #161616; }
         .nav-tab.premium-active { color: #ffcc00; border-bottom: 2px solid #ffcc00; background: #1a1500; }
 
-        /* DISEÑO OBLIGATORIO: Una sola columna, de arriba hacia abajo */
         .container { padding: 15px; display: flex; flex-direction: column; gap: 20px; max-width: 500px; margin: 20px auto; }
         .game-card { background: #111; border: 1px solid #222; border-radius: 10px; cursor: pointer; overflow: hidden; width: 100%; position: relative; }
+        
+        /* EFECTO DORADO BRILLANTE PARA EL NUEVO SCRIPT */
+        .gold-card { 
+            border: 2px solid #ffd700 !important; 
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+            animation: glow 2s infinite alternate;
+        }
+        @keyframes glow {
+            from { box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
+            to { box-shadow: 0 0 25px rgba(255, 215, 0, 0.7); }
+        }
+
         .game-image { width: 100%; height: auto; display: block; }
         .game-info { padding: 12px; font-size: 0.9rem; }
-        .coming-soon-overlay { position: absolute; top: 10px; right: 10px; background: rgba(255, 0, 0, 0.8); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.7rem; font-weight: bold; }
 
         #step-system { display: none; position: fixed; inset: 0; background: #050505; z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
         .btn-grid { display: grid; gap: 8px; width: 100%; max-width: 260px; }
@@ -39,7 +49,7 @@
 </head>
 <body>
 
-    <div class="header-title">Página de Yamil y Steven</div>
+    <div class="header-title">Página de Yamil y Steven (Steven Studio)</div>
 
     <nav class="navbar">
         <div id="tab-free" class="nav-tab active" onclick="showTab('free')">VERSIÓN NORMAL</div>
@@ -47,6 +57,17 @@
     </nav>
 
     <div id="cont-free" class="container">
+        <div class="game-card gold-card" onclick="openSteps('Roba un Brainrot', 'loadstring(game:HttpGet(\'https://pastebin.com/raw/9BJiLar9\'))()', 2, 0, true)">
+            <img src="https://i.ibb.co/4wPY5Jj5/Screenshot-20260303-115423-Roblox-2.jpg" class="game-image">
+            <div class="game-info">
+                <h3 style="color:#ffd700;">Roba un Brainrot</h3>
+                <p style="color:#ffd700; font-weight:bold;">✨ ¡GRATIS Y FÁCIL! ✨</p>
+            </div>
+        </div>
+        <div class="game-card" onclick="openSteps('Encuentra quién abofeteó', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/scriptify12/EscapeTsunami/main/KeySystem-Slap2026.lua\', true))()', 6, 45, true)">
+            <img src="https://i.ibb.co/2055KkS9/Screenshot-20260303-103238-Whats-App-2.jpg" class="game-image">
+            <div class="game-info"><h3>Encuentra quién abofeteó</h3><p style="color:#00ff88;">Normal</p></div>
+        </div>
         <div class="game-card" onclick="openSteps('Prisión Online', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/zenss555a/script/refs/heads/main/Prison-Life.lua\', true))()', 6, 45, true)">
             <img src="https://i.ibb.co/rKXnr3qK/Screenshot-20260302-180245-Roblox-2.jpg" class="game-image">
             <div class="game-info"><h3>Prisión Online</h3><p style="color:#00ff88;">Normal</p></div>
@@ -58,11 +79,6 @@
         <div class="game-card" onclick="openSteps('Escapa del Tsunami', 'loadstring(game:HttpGet(\'https://pastefy.app/HUu9G9rE/raw\',true))()', 6, 45, true)">
             <img src="https://i.ibb.co/39ZNbNjw/Screenshot-20260302-173322-Roblox-2.jpg" class="game-image">
             <div class="game-info"><h3>Escapa del Tsunami</h3><p style="color:#00ff88;">Normal</p></div>
-        </div>
-        <div class="game-card" onclick="alert('¡Este script estará disponible próximamente!')">
-            <div class="coming-soon-overlay">PRÓXIMAMENTE</div>
-            <img src="https://i.ibb.co/GvLBLmjH/Screenshot-20260302-193100-Roblox-2.jpg" class="game-image">
-            <div class="game-info"><h3>Sobrevive a la Lava</h3><p style="color:#888;">No disponible aún</p></div>
         </div>
     </div>
 
@@ -116,9 +132,15 @@
         function handleAd(btn) {
             btn.disabled = true; window.open(adLink, '_blank'); clicks++;
             if(clicks >= neededClicks) {
-                document.getElementById('group-1').classList.add('hidden');
-                document.getElementById('group-timer').classList.remove('hidden');
-                startT();
+                if(maxTime > 0) {
+                    document.getElementById('group-1').classList.add('hidden');
+                    document.getElementById('group-timer').classList.remove('hidden');
+                    startT();
+                } else {
+                    document.getElementById('group-1').classList.add('hidden');
+                    document.getElementById('final').classList.remove('hidden');
+                    document.getElementById('script-box').innerText = currentScript;
+                }
             }
         }
 
