@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Yamil y Steven</title>
+    <title>El mejor centro de Scripts - Página de Yamil y Steven</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
         body { background: #050505; color: #fff; text-align: center; }
@@ -15,10 +15,12 @@
         .nav-tab.active { color: #00ff88; border-bottom: 2px solid #00ff88; background: #161616; }
         .nav-tab.premium-active { color: #ffcc00; border-bottom: 2px solid #ffcc00; background: #1a1500; }
 
-        .container { padding: 15px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; max-width: 1000px; margin: 20px auto; }
-        .game-card { background: #111; border: 1px solid #222; border-radius: 10px; cursor: pointer; overflow: hidden; }
-        .game-image { width: 100%; height: 110px; object-fit: cover; }
-        .game-info { padding: 8px; font-size: 0.8rem; }
+        /* DISEÑO OBLIGATORIO: Una sola columna, de arriba hacia abajo */
+        .container { padding: 15px; display: flex; flex-direction: column; gap: 20px; max-width: 500px; margin: 20px auto; }
+        .game-card { background: #111; border: 1px solid #222; border-radius: 10px; cursor: pointer; overflow: hidden; width: 100%; position: relative; }
+        .game-image { width: 100%; height: auto; display: block; }
+        .game-info { padding: 12px; font-size: 0.9rem; }
+        .coming-soon-overlay { position: absolute; top: 10px; right: 10px; background: rgba(255, 0, 0, 0.8); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.7rem; font-weight: bold; }
 
         #step-system { display: none; position: fixed; inset: 0; background: #050505; z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
         .btn-grid { display: grid; gap: 8px; width: 100%; max-width: 260px; }
@@ -40,31 +42,44 @@
     <div class="header-title">Página de Yamil y Steven</div>
 
     <nav class="navbar">
-        <div id="tab-free" class="nav-tab active" onclick="showTab('free')">GRATIS</div>
-        <div id="tab-premium" class="nav-tab" onclick="showTab('premium')">PREMIUM ⭐</div>
+        <div id="tab-free" class="nav-tab active" onclick="showTab('free')">VERSIÓN NORMAL</div>
+        <div id="tab-premium" class="nav-tab" onclick="showTab('premium')">VERSIÓN PREMIUM ⭐</div>
     </nav>
 
     <div id="cont-free" class="container">
-        <div class="game-card" onclick="openSteps('MM2', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/spawnerscript/WymsHub/refs/heads/main/MM2.lua\'))()', 5, 30, false)">
+        <div class="game-card" onclick="openSteps('Prisión Online', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/zenss555a/script/refs/heads/main/Prison-Life.lua\', true))()', 6, 45, true)">
+            <img src="https://i.ibb.co/rKXnr3qK/Screenshot-20260302-180245-Roblox-2.jpg" class="game-image">
+            <div class="game-info"><h3>Prisión Online</h3><p style="color:#00ff88;">Normal</p></div>
+        </div>
+        <div class="game-card" onclick="openSteps('MM2', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/spawnerscript/WymsHub/refs/heads/main/MM2.lua\'))()', 6, 45, true)">
             <img src="https://i.ibb.co/v6MNsLZT/Screenshot-20260302-140141-Roblox-2.jpg" class="game-image">
-            <div class="game-info"><h3>MM2</h3><p style="color:#00ff88;">Gratis</p></div>
+            <div class="game-info"><h3>MM2</h3><p style="color:#00ff88;">Normal</p></div>
+        </div>
+        <div class="game-card" onclick="openSteps('Escapa del Tsunami', 'loadstring(game:HttpGet(\'https://pastefy.app/HUu9G9rE/raw\',true))()', 6, 45, true)">
+            <img src="https://i.ibb.co/39ZNbNjw/Screenshot-20260302-173322-Roblox-2.jpg" class="game-image">
+            <div class="game-info"><h3>Escapa del Tsunami</h3><p style="color:#00ff88;">Normal</p></div>
+        </div>
+        <div class="game-card" onclick="alert('¡Este script estará disponible próximamente!')">
+            <div class="coming-soon-overlay">PRÓXIMAMENTE</div>
+            <img src="https://i.ibb.co/GvLBLmjH/Screenshot-20260302-193100-Roblox-2.jpg" class="game-image">
+            <div class="game-info"><h3>Sobrevive a la Lava</h3><p style="color:#888;">No disponible aún</p></div>
         </div>
     </div>
 
     <div id="cont-premium" class="container hidden">
         <div class="game-card" style="border-color: #ffcc00;" onclick="openSteps('Rivales PREMIUM', 'loadstring(game:HttpGet(\'https://pastebin.com/raw/aN4VMhvP\'))()', 8, 60, true)">
             <img src="https://i.ibb.co/k2G6nbnH/Screenshot-20260302-140132-Roblox-2.jpg" class="game-image">
-            <div class="game-info"><h3>Rivales (SÚPER ROTO)</h3><p style="color:#ffcc00;">8 Pasos + Doble Anuncio</p></div>
+            <div class="game-info"><h3>Rivales (SÚPER ROTO)</h3><p style="color:#ffcc00;">8 Botones + Doble Anuncio</p></div>
         </div>
         <div class="game-card" style="border-color: #ffcc00;" onclick="openSteps('Duelos PREMIUM', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/Rysted/scripts/main/MurderersVSSheriffs.lua\'))()', 8, 60, true)">
             <img src="https://i.ibb.co/bgKfP41G/Screenshot-20260302-140119-Roblox-2.jpg" class="game-image">
-            <div class="game-info"><h3>Duelos (ROTÍSIMO)</h3><p style="color:#ffcc00;">8 Pasos + Doble Anuncio</p></div>
+            <div class="game-info"><h3>Duelos (ROTÍSIMO)</h3><p style="color:#ffcc00;">8 Botones + Doble Anuncio</p></div>
         </div>
     </div>
 
     <div id="step-system">
         <button class="back-btn" onclick="location.reload()">← VOLVER</button>
-        <h2 id="status-label" style="font-size:1rem; color:#00ff88; margin-bottom:15px;">Paso 1</h2>
+        <h2 id="status-label" style="font-size:1rem; color:#00ff88; margin-bottom:15px;">Cargando...</h2>
         <div id="group-1" class="btn-grid"></div>
         <div id="group-timer" class="hidden">
             <div class="progress-circle" id="circle"><span class="timer-num" id="secs">0</span></div>
@@ -79,7 +94,7 @@
 
     <script>
         let clicks = 0, time = 0, maxTime = 0, isPaused = false, timer, currentScript = "", neededClicks = 0, isPremium = false, resumeClicks = 0;
-        const adLink = "TU_SMART_LINK_AQUÍ";
+        const adLink = "Https://omg10.com/4/10022394";
 
         function showTab(type) {
             document.getElementById('cont-free').classList.toggle('hidden', type !== 'free');
@@ -106,6 +121,51 @@
                 startT();
             }
         }
+
+        function startT() {
+            document.getElementById('secs').innerText = time;
+            timer = setInterval(() => {
+                if(!isPaused) {
+                    time--;
+                    let p = ((maxTime-time)/maxTime)*100;
+                    document.getElementById('circle').style.background = `conic-gradient(#00ff88 ${p}%, #222 ${p}%)`;
+                    document.getElementById('secs').innerText = time;
+                    if(time % 10 === 0 && time > 0) {
+                        isPaused = true;
+                        resumeClicks = 0;
+                        document.getElementById('secs').classList.add('hidden');
+                        document.getElementById('pause-btn').classList.remove('hidden');
+                        document.getElementById('pause-btn').innerText = "CONTINUAR (Paso 1/2)";
+                    }
+                    if(time <= 0) {
+                        clearInterval(timer);
+                        document.getElementById('group-timer').classList.add('hidden');
+                        document.getElementById('final').classList.remove('hidden');
+                        document.getElementById('script-box').innerText = currentScript;
+                    }
+                }
+            }, 750);
+        }
+
+        function resume() {
+            window.open(adLink, '_blank');
+            resumeClicks++;
+            if(resumeClicks >= 2) {
+                isPaused = false;
+                document.getElementById('secs').classList.remove('hidden');
+                document.getElementById('pause-btn').classList.add('hidden');
+            } else {
+                document.getElementById('pause-btn').innerText = "CONTINUAR (Paso 2/2)";
+            }
+        }
+
+        function copyText() {
+            navigator.clipboard.writeText(currentScript);
+            document.getElementById('btn-copy').innerText = "¡COPIADO!";
+        }
+    </script>
+</body>
+</html>
 
         function startT() {
             document.getElementById('secs').innerText = time;
