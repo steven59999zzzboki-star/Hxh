@@ -15,41 +15,42 @@
         .nav-tab.active { color: #00ff88; border-bottom: 2px solid #00ff88; background: #161616; }
         .nav-tab.premium-active { color: #ffcc00; border-bottom: 2px solid #ffcc00; background: #1a1500; }
 
-        .container { padding: 15px; display: flex; flex-direction: column; gap: 20px; max-width: 500px; margin: 20px auto; }
+        .tutorial-btn { background: #ff0000; color: #fff; padding: 12px; width: 90%; max-width: 400px; margin: 15px auto; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; display: block; }
+        #video-box { display: none; margin-bottom: 20px; }
+        iframe { width: 260px; aspect-ratio: 9/16; border-radius: 10px; border: 1px solid #333; }
+
+        .container { padding: 15px; display: flex; flex-direction: column; gap: 20px; max-width: 500px; margin: 0 auto; }
         .game-card { background: #111; border: 1px solid #222; border-radius: 10px; cursor: pointer; overflow: hidden; width: 100%; position: relative; }
         
-        /* EFECTO DORADO BRILLANTE PARA EL NUEVO SCRIPT */
-        .gold-card { 
-            border: 2px solid #ffd700 !important; 
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
-            animation: glow 2s infinite alternate;
-        }
-        @keyframes glow {
-            from { box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
-            to { box-shadow: 0 0 25px rgba(255, 215, 0, 0.7); }
-        }
+        .gold-card { border: 2px solid #ffd700 !important; animation: glow 2s infinite alternate; }
+        @keyframes glow { from { box-shadow: 0 0 5px #ffd70033; } to { box-shadow: 0 0 20px #ffd70066; } }
 
         .game-image { width: 100%; height: auto; display: block; }
         .game-info { padding: 12px; font-size: 0.9rem; }
 
-        #step-system { display: none; position: fixed; inset: 0; background: #050505; z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+        #step-system { display: none; position: fixed; inset: 0; background: #050505; z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
         .btn-grid { display: grid; gap: 8px; width: 100%; max-width: 260px; }
-        .smart-btn { background: #1a1a1a; border: 1px solid #333; color: #fff; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
-        .smart-btn:disabled { opacity: 0.2; }
+        .smart-btn { background: #1a1a1a; border: 1px solid #333; color: #fff; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }
 
         .progress-circle { position: relative; width: 140px; height: 140px; border-radius: 50%; background: conic-gradient(#00ff88 0%, #222 0%); display: flex; align-items: center; justify-content: center; margin: 15px 0; }
         .progress-circle::before { content: ""; position: absolute; width: 115px; height: 115px; background: #050505; border-radius: 50%; }
         .timer-num { position: relative; font-size: 2rem; font-weight: bold; }
 
-        .back-btn { position: absolute; top: 15px; left: 15px; background: none; border: 1px solid #333; color: #666; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+        .back-btn { position: absolute; top: 15px; left: 15px; background: none; border: 1px solid #333; color: #666; padding: 5px 10px; border-radius: 4px; }
         .hidden { display: none !important; }
         code { display: block; background: #000; padding: 15px; border: 1px dashed #00ff88; margin-top: 15px; font-size: 0.7rem; color: #00ff88; word-break: break-all; }
-        .copy-btn { background: #00ff88; color: #000; border: none; padding: 10px; border-radius: 5px; font-weight: bold; margin-top: 10px; width: 100%; max-width: 260px; cursor: pointer; }
+        .copy-btn { background: #00ff88; color: #000; border: none; padding: 10px; border-radius: 5px; font-weight: bold; width: 100%; max-width: 260px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <div class="header-title">Página de Yamil y Steven (Steven Studio)</div>
+
+    <button class="tutorial-btn" onclick="toggleTutorial()">🎥 ¿CÓMO PASAR LA PÁGINA? (TUTORIAL)</button>
+    
+    <div id="video-box">
+        <div id="player"></div>
+    </div>
 
     <nav class="navbar">
         <div id="tab-free" class="nav-tab active" onclick="showTab('free')">VERSIÓN NORMAL</div>
@@ -57,55 +58,117 @@
     </nav>
 
     <div id="cont-free" class="container">
-        <div class="game-card gold-card" onclick="openSteps('Roba un Brainrot', 'loadstring(game:HttpGet(\'https://pastebin.com/raw/9BJiLar9\'))()', 2, 0, true)">
+        <div class="game-card gold-card" onclick="openSteps('Roba un Brainrot (Chili Hub)', 'loadstring(game:HttpGet(\'https://rawscripts.net/raw/SOON-Steal-a-Brainrot-Chili-Hub-keyless-57764\'))()', 2, 0)">
             <img src="https://i.ibb.co/4wPY5Jj5/Screenshot-20260303-115423-Roblox-2.jpg" class="game-image">
-            <div class="game-info">
-                <h3 style="color:#ffd700;">Roba un Brainrot</h3>
-                <p style="color:#ffd700; font-weight:bold;">✨ ¡GRATIS Y FÁCIL! ✨</p>
-            </div>
+            <div class="game-info"><h3 style="color:#ffd700;">Roba un Brainrot</h3><p style="color:#ffd700;">✨ CHILI HUB (KEYLESS) ✨</p></div>
         </div>
-        <div class="game-card" onclick="openSteps('Encuentra quién abofeteó', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/scriptify12/EscapeTsunami/main/KeySystem-Slap2026.lua\', true))()', 6, 45, true)">
+
+        <div class="game-card" onclick="openSteps('Encuentra quién abofeteó', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/scriptify12/EscapeTsunami/main/KeySystem-Slap2026.lua\', true))()', 6, 45)">
             <img src="https://i.ibb.co/2055KkS9/Screenshot-20260303-103238-Whats-App-2.jpg" class="game-image">
             <div class="game-info"><h3>Encuentra quién abofeteó</h3><p style="color:#00ff88;">Normal</p></div>
         </div>
-        <div class="game-card" onclick="openSteps('Prisión Online', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/zenss555a/script/refs/heads/main/Prison-Life.lua\', true))()', 6, 45, true)">
+
+        <div class="game-card" onclick="openSteps('Prisión Online', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/zenss555a/script/refs/heads/main/Prison-Life.lua\', true))()', 6, 45)">
             <img src="https://i.ibb.co/rKXnr3qK/Screenshot-20260302-180245-Roblox-2.jpg" class="game-image">
             <div class="game-info"><h3>Prisión Online</h3><p style="color:#00ff88;">Normal</p></div>
         </div>
-        <div class="game-card" onclick="openSteps('MM2', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/spawnerscript/WymsHub/refs/heads/main/MM2.lua\'))()', 6, 45, true)">
+
+        <div class="game-card" onclick="openSteps('MM2', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/spawnerscript/WymsHub/refs/heads/main/MM2.lua\'))()', 6, 45)">
             <img src="https://i.ibb.co/v6MNsLZT/Screenshot-20260302-140141-Roblox-2.jpg" class="game-image">
             <div class="game-info"><h3>MM2</h3><p style="color:#00ff88;">Normal</p></div>
         </div>
-        <div class="game-card" onclick="openSteps('Escapa del Tsunami', 'loadstring(game:HttpGet(\'https://pastefy.app/HUu9G9rE/raw\',true))()', 6, 45, true)">
+
+        <div class="game-card" onclick="openSteps('Escapa del Tsunami', 'loadstring(game:HttpGet(\'https://pastefy.app/HUu9G9rE/raw\',true))()', 6, 45)">
             <img src="https://i.ibb.co/39ZNbNjw/Screenshot-20260302-173322-Roblox-2.jpg" class="game-image">
             <div class="game-info"><h3>Escapa del Tsunami</h3><p style="color:#00ff88;">Normal</p></div>
         </div>
     </div>
 
     <div id="cont-premium" class="container hidden">
-        <div class="game-card" style="border-color: #ffcc00;" onclick="openSteps('Rivales PREMIUM', 'loadstring(game:HttpGet(\'https://pastebin.com/raw/aN4VMhvP\'))()', 8, 60, true)">
+        <div class="game-card" style="border-color: #ffcc00;" onclick="openSteps('Rivales PREMIUM', 'loadstring(game:HttpGet(\'https://pastebin.com/raw/aN4VMhvP\'))()', 8, 60)">
             <img src="https://i.ibb.co/k2G6nbnH/Screenshot-20260302-140132-Roblox-2.jpg" class="game-image">
-            <div class="game-info"><h3>Rivales (SÚPER ROTO)</h3><p style="color:#ffcc00;">8 Botones + Doble Anuncio</p></div>
+            <div class="game-info"><h3>Rivales (PREMIUM)</h3><p style="color:#ffcc00;">8 Botones + 60 seg</p></div>
         </div>
-        <div class="game-card" style="border-color: #ffcc00;" onclick="openSteps('Duelos PREMIUM', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/Rysted/scripts/main/MurderersVSSheriffs.lua\'))()', 8, 60, true)">
+        <div class="game-card" style="border-color: #ffcc00;" onclick="openSteps('Duelos PREMIUM', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/Rysted/scripts/main/MurderersVSSheriffs.lua\'))()', 8, 60)">
             <img src="https://i.ibb.co/bgKfP41G/Screenshot-20260302-140119-Roblox-2.jpg" class="game-image">
-            <div class="game-info"><h3>Duelos (ROTÍSIMO)</h3><p style="color:#ffcc00;">8 Botones + Doble Anuncio</p></div>
+            <div class="game-info"><h3>Duelos (PREMIUM)</h3><p style="color:#ffcc00;">8 Botones + 60 seg</p></div>
         </div>
     </div>
 
     <div id="step-system">
         <button class="back-btn" onclick="location.reload()">← VOLVER</button>
-        <h2 id="status-label" style="font-size:1rem; color:#00ff88; margin-bottom:15px;">Cargando...</h2>
+        <h2 id="status-label">PASOS</h2>
         <div id="group-1" class="btn-grid"></div>
         <div id="group-timer" class="hidden">
             <div class="progress-circle" id="circle"><span class="timer-num" id="secs">0</span></div>
             <button id="pause-btn" class="smart-btn hidden" style="background:#00ff88; color:#000;" onclick="resume()">CONTINUAR (Paso 1/2)</button>
         </div>
         <div id="final" class="hidden">
-            <h2 style="color:gold; font-size:1.1rem;">¡DESBLOQUEADO!</h2>
+            <h2 style="color:gold;">¡DESBLOQUEADO!</h2>
             <code id="script-box"></code>
-            <button class="copy-btn" id="btn-copy" onclick="copyText()">COPIAR SCRIPT</button>
+            <button class="copy-btn" onclick="copyText()">COPIAR SCRIPT</button>
         </div>
+    </div>
+
+    <script>
+        const adLink = "Https://omg10.com/4/10022394";
+        let clicks = 0, time = 0, maxTime = 0, isPaused = false, currentScript = "", neededClicks = 0, resumeClicks = 0;
+
+        function toggleTutorial() {
+            const box = document.getElementById('video-box');
+            const player = document.getElementById('player');
+            if (box.style.display === 'block') {
+                box.style.display = 'none';
+                player.innerHTML = ''; 
+            } else {
+                box.style.display = 'block';
+                player.innerHTML = '<iframe src="https://www.youtube.com/embed/CwpTA4FQ-Ko?autoplay=1" title="Tutorial" allow="autoplay"></iframe>';
+            }
+        }
+
+        function showTab(type) {
+            document.getElementById('cont-free').classList.toggle('hidden', type !== 'free');
+            document.getElementById('cont-premium').classList.toggle('hidden', type !== 'premium');
+            document.getElementById('tab-free').className = 'nav-tab' + (type === 'free' ? ' active' : '');
+            document.getElementById('tab-premium').className = 'nav-tab' + (type === 'premium' ? ' premium-active' : '');
+        }
+
+        function openSteps(name, script, clicksNeeded, seconds) {
+            currentScript = script; neededClicks = clicksNeeded; maxTime = seconds; time = seconds;
+            document.getElementById('step-system').style.display = 'flex';
+            document.getElementById('status-label').innerText = name;
+            let grid = document.getElementById('group-1'); grid.innerHTML = "";
+            for(let i=1; i<=neededClicks; i++) { grid.innerHTML += `<button class="smart-btn" onclick="handleAd(this)">Abrir Enlace ${i}</button>`; }
+        }
+
+        function handleAd(btn) {
+            btn.disabled = true; window.open(adLink, '_blank'); clicks++;
+            if(clicks >= neededClicks) {
+                if(maxTime > 0) { document.getElementById('group-1').classList.add('hidden'); document.getElementById('group-timer').classList.remove('hidden'); startT(); }
+                else { document.getElementById('group-1').classList.add('hidden'); document.getElementById('final').classList.remove('hidden'); document.getElementById('script-box').innerText = currentScript; }
+            }
+        }
+
+        function startT() {
+            document.getElementById('secs').innerText = time;
+            let timer = setInterval(() => {
+                if(!isPaused) {
+                    time--;
+                    let p = ((maxTime-time)/maxTime)*100;
+                    document.getElementById('circle').style.background = `conic-gradient(#00ff88 ${p}%, #222 ${p}%)`;
+                    document.getElementById('secs').innerText = time;
+                    if(time % 10 === 0 && time > 0) { isPaused = true; resumeClicks = 0; document.getElementById('secs').classList.add('hidden'); document.getElementById('pause-btn').classList.remove('hidden'); }
+                    if(time <= 0) { clearInterval(timer); document.getElementById('group-timer').classList.add('hidden'); document.getElementById('final').classList.remove('hidden'); document.getElementById('script-box').innerText = currentScript; }
+                }
+            }, 750);
+        }
+
+        function resume() { window.open(adLink, '_blank'); resumeClicks++; if(resumeClicks >= 2) { isPaused = false; document.getElementById('secs').classList.remove('hidden'); document.getElementById('pause-btn').classList.add('hidden'); } }
+
+        function copyText() { navigator.clipboard.writeText(currentScript); alert("¡Copiado!"); }
+    </script>
+</body>
+</html>
     </div>
 
     <script>
