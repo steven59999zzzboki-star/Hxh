@@ -56,6 +56,16 @@
     </nav>
 
     <div id="cont-free" class="container">
+        <div class="game-card" onclick="openSteps('Sobreviviendo lava', 'loadstring(game:HttpGet(\'https://raw.rawscriptserver.com/427425254160\'))()', 6, 45)">
+            <img src="https://i.ibb.co/GvLBLmjH/Screenshot-20260302-193100-Roblox-2.jpg" class="game-image">
+            <div class="game-info"><h3>Sobreviviendo lava</h3><p style="color:#00ff88;">Normal</p></div>
+        </div>
+
+        <div class="game-card" onclick="openSteps('Obby oscilante para Brainrots!', 'loadstring(game:HttpGet(\'https://pastebin.com/raw/VJVkivY2\'))()', 6, 45)">
+            <img src="https://i.ibb.co/7tvsSqJn/Screenshot-20260307-115716-Roblox-2.jpg" class="game-image">
+            <div class="game-info"><h3>Obby oscilante para Brainrots!</h3><p style="color:#00ff88;">Normal</p></div>
+        </div>
+
         <div class="game-card" onclick="openSteps('Encuentra quién abofeteó', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/scriptify12/EscapeTsunami/main/KeySystem-Slap2026.lua\', true))()', 6, 45)">
             <img src="https://i.ibb.co/2055KkS9/Screenshot-20260303-103238-Whats-App-2.jpg" class="game-image">
             <div class="game-info"><h3>Encuentra quién abofeteó</h3><p style="color:#00ff88;">Normal</p></div>
@@ -111,13 +121,8 @@
         function toggleTutorial() {
             const box = document.getElementById('video-box');
             const player = document.getElementById('player');
-            if (box.style.display === 'block') {
-                box.style.display = 'none';
-                player.innerHTML = ''; 
-            } else {
-                box.style.display = 'block';
-                player.innerHTML = '<iframe src="https://www.youtube.com/embed/CwpTA4FQ-Ko?autoplay=1&start=41&controls=0&modestbranding=1" title="Tutorial" allow="autoplay"></iframe>';
-            }
+            if (box.style.display === 'block') { box.style.display = 'none'; player.innerHTML = ''; } 
+            else { box.style.display = 'block'; player.innerHTML = '<iframe src="https://www.youtube.com/embed/CwpTA4FQ-Ko?autoplay=1&start=41&controls=0&modestbranding=1" title="Tutorial" allow="autoplay"></iframe>'; }
         }
 
         function showTab(type) {
