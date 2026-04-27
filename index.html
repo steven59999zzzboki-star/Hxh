@@ -5,6 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El mejor centro de Scripts - Steven Studio</title>
     <style>
+        /* --- PANTALLA DE CARGA NEGRO TOTAL --- */
+        #fade-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000; /* Negro puro */
+            z-index: 10000; /* Por encima de todo */
+            opacity: 1;
+            transition: opacity 1.2s ease-in-out; /* Desvanecimiento suave */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: all; /* Bloquea clics mientras carga */
+        }
+        /* -------------------------------------- */
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
         body { background: #050505; color: #fff; text-align: center; }
         
@@ -42,6 +60,10 @@
 </head>
 <body>
 
+    <div id="fade-overlay">
+        <h2 style="color: #00ff88; font-family: monospace;">STEVEN STUDIO...</h2>
+    </div>
+
     <div class="header-title">Página de Yamil y Steven (Steven Studio)</div>
 
     <button class="tutorial-btn" onclick="toggleTutorial()">🎥 ¿CÓMO PASAR LA PÁGINA? (TUTORIAL)</button>
@@ -60,12 +82,10 @@
             <img src="https://i.ibb.co/GvLBLmjH/Screenshot-20260302-193100-Roblox-2.jpg" class="game-image">
             <div class="game-info"><h3>Sobreviviendo lava</h3><p style="color:#00ff88;">Normal</p></div>
         </div>
-
         <div class="game-card" onclick="openSteps('Obby oscilante para Brainrots!', 'loadstring(game:HttpGet(\'https://pastebin.com/raw/VJVkivY2\'))()', 6, 45)">
             <img src="https://i.ibb.co/7tvsSqJn/Screenshot-20260307-115716-Roblox-2.jpg" class="game-image">
             <div class="game-info"><h3>Obby oscilante para Brainrots!</h3><p style="color:#00ff88;">Normal</p></div>
         </div>
-
         <div class="game-card" onclick="openSteps('Encuentra quién abofeteó', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/scriptify12/EscapeTsunami/main/KeySystem-Slap2026.lua\', true))()', 6, 45)">
             <img src="https://i.ibb.co/2055KkS9/Screenshot-20260303-103238-Whats-App-2.jpg" class="game-image">
             <div class="game-info"><h3>Encuentra quién abofeteó</h3><p style="color:#00ff88;">Normal</p></div>
@@ -115,11 +135,23 @@
     </div>
 
     <script>
-        // CONFIGURACIÓN DE TU HOJA DE CÁLCULO
-        const VINCULO_EXCEL = "https://docs.google.com/spreadsheets/d/10DlgHwmLWQskxFFL0Xe-QUYECH-U8BjroPttI5P6_Fg/edit?usp=drivesdk";
-        const CSV_URL = VINCULO_EXCEL.split('/edit')[0] + "/export?format=csv";
+        // EFECTO DE CARGA CONTROLADO
+        window.addEventListener('load', function() {
+            const overlay = document.getElementById('fade-overlay');
+            // Espera 1.5 segundos antes de empezar a desaparecer
+            setTimeout(() => {
+                overlay.style.opacity = '0';
+                // Después de que termine la animación de opacidad, lo quitamos del todo
+                setTimeout(() => { 
+                    overlay.style.display = 'none'; 
+                }, 1200);
+            }, 1500); 
+        });
 
+        const VINCULO_EXCEL = "https://docs.google.com/spreadsheets/d/10DlgHwmLWQskxFFL0Xe-QUYECH-U8BjroPttI5P6_Fg/edit?usp=drivesdk";
+        const CSV_URL = VINCULO_EXCEL.split('/edit')[0] + "/export?format=csv&cachebuster=" + Date.now();
         const adLink = "Https://omg10.com/4/10022394";
+        
         let clicks = 0, time = 0, maxTime = 0, isPaused = false, currentScript = "", neededClicks = 0, resumeClicks = 0;
 
         async function loadExternalScripts() {
@@ -132,14 +164,17 @@
                     const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
                     if (cols.length < 3) return;
                     
-                    let [nombre, imagen, script, version, orden] = cols.map(c => c.replace(/^"|"$/g, '').trim());
-                    if(!nombre || !script) return;
+                    let [nombre, imagen, scriptRaw, version, orden, anuncios] = cols.map(c => c.replace(/^"|"$/g, '').trim());
+                    if(!nombre || !scriptRaw) return;
                     
+                    const scriptB64 = btoa(unescape(encodeURIComponent(scriptRaw)));
                     const isPremium = version && version.toLowerCase() === 'premium';
                     const posicion = orden && orden.toLowerCase() === 'arriba' ? 'afterbegin' : 'beforeend';
+                    const tieneAnuncios = anuncios && anuncios.toLowerCase() === 'no' ? 'false' : 'true';
 
                     const card = `
-                        <div class="game-card" style="${isPremium ? 'border-color: #ffcc00;' : ''}" onclick="openSteps('${nombre}', '${script}', ${isPremium ? 8 : 6}, ${isPremium ? 60 : 45})">
+                        <div class="game-card" style="${isPremium ? 'border-color: #ffcc00;' : ''}" 
+                             onclick="openSteps('${nombre}', '${scriptB64}', ${isPremium ? 8 : 6}, ${isPremium ? 60 : 45}, true, ${tieneAnuncios})">
                             <img src="${imagen}" class="game-image">
                             <div class="game-info">
                                 <h3>${nombre}</h3>
@@ -170,10 +205,24 @@
             document.getElementById('tab-premium').className = 'nav-tab' + (type === 'premium' ? ' premium-active' : '');
         }
 
-        function openSteps(name, script, clicksNeeded, seconds) {
-            currentScript = script; neededClicks = clicksNeeded; maxTime = seconds; time = seconds;
+        function openSteps(name, script, clicksNeeded, seconds, isExternal = false, conAnuncios = true) {
+            currentScript = isExternal ? decodeURIComponent(escape(atob(script))) : script;
+            
+            if (!conAnuncios) {
+                document.getElementById('step-system').style.display = 'flex';
+                document.getElementById('status-label').innerText = name;
+                document.getElementById('group-1').classList.add('hidden');
+                document.getElementById('group-timer').classList.add('hidden');
+                document.getElementById('final').classList.remove('hidden');
+                document.getElementById('script-box').innerText = currentScript;
+                return;
+            }
+
+            neededClicks = clicksNeeded; maxTime = seconds; time = seconds; clicks = 0;
             document.getElementById('step-system').style.display = 'flex';
             document.getElementById('status-label').innerText = name;
+            document.getElementById('group-1').classList.remove('hidden');
+            document.getElementById('final').classList.add('hidden');
             let grid = document.getElementById('group-1'); grid.innerHTML = "";
             for(let i=1; i<=neededClicks; i++) { 
                 grid.innerHTML += `<button class="smart-btn" onclick="handleAd(this)">Abrir Enlace ${i}</button>`; 
@@ -220,5 +269,4 @@
         loadExternalScripts();
     </script>
 </body>
-          </html>
-  
+</html>
