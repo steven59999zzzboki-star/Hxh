@@ -34,6 +34,10 @@
         .nav-tab.premium-active { color: #ffcc00; border-bottom: 2px solid #ffcc00; background: #1a1500; }
 
         .tutorial-btn { background: #ff0000; color: #fff; padding: 12px; width: 90%; max-width: 400px; margin: 15px auto; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; display: block; }
+        
+        /* ESTILO DEL BOTÓN DE REPORTE */
+        .report-btn { background: #444; color: #fff; padding: 12px; width: 90%; max-width: 400px; margin: 0 auto 15px auto; border-radius: 8px; font-weight: bold; cursor: pointer; border: 1px solid #666; display: block; text-decoration: none; font-size: 0.9rem; }
+
         #video-box { display: none; margin-bottom: 20px; width: 260px; margin-left: auto; margin-right: auto; }
         iframe { width: 260px; aspect-ratio: 9/16; border-radius: 10px; border: 1px solid #333; }
 
@@ -68,6 +72,8 @@
 
     <button class="tutorial-btn" onclick="toggleTutorial()">🎥 ¿CÓMO PASAR LA PÁGINA? (TUTORIAL)</button>
     
+    <a href="https://steven59999zzzboki-star.github.io/Reportes/" class="report-btn">🚩 REPORTAR FALLO / SCRIPT</a>
+
     <div id="video-box">
         <div id="player"></div>
     </div>
@@ -138,10 +144,8 @@
         // EFECTO DE CARGA CONTROLADO
         window.addEventListener('load', function() {
             const overlay = document.getElementById('fade-overlay');
-            // Espera 1.5 segundos antes de empezar a desaparecer
             setTimeout(() => {
                 overlay.style.opacity = '0';
-                // Después de que termine la animación de opacidad, lo quitamos del todo
                 setTimeout(() => { 
                     overlay.style.display = 'none'; 
                 }, 1200);
