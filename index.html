@@ -12,14 +12,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #000000; /* Negro puro */
-            z-index: 10000; /* Por encima de todo */
+            background: #000000;
+            z-index: 10000;
             opacity: 1;
-            transition: opacity 1.2s ease-in-out; /* Desvanecimiento suave */
+            transition: opacity 1.2s ease-in-out;
             display: flex;
             align-items: center;
             justify-content: center;
-            pointer-events: all; /* Bloquea clics mientras carga */
+            pointer-events: all;
         }
         /* -------------------------------------- */
 
@@ -35,7 +35,6 @@
 
         .tutorial-btn { background: #ff0000; color: #fff; padding: 12px; width: 90%; max-width: 400px; margin: 15px auto; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; display: block; }
         
-        /* ESTILO DEL BOTÓN DE REPORTE */
         .report-btn { background: #444; color: #fff; padding: 12px; width: 90%; max-width: 400px; margin: 0 auto 15px auto; border-radius: 8px; font-weight: bold; cursor: pointer; border: 1px solid #666; display: block; text-decoration: none; font-size: 0.9rem; }
 
         #video-box { display: none; margin-bottom: 20px; width: 260px; margin-left: auto; margin-right: auto; }
@@ -83,43 +82,8 @@
         <div id="tab-premium" class="nav-tab" onclick="showTab('premium')">VERSIÓN PREMIUM ⭐</div>
     </nav>
 
-    <div id="cont-free" class="container">
-        <div class="game-card" onclick="openSteps('Sobreviviendo lava', 'loadstring(game:HttpGet(\'https://raw.rawscriptserver.com/427425254160\'))()', 6, 45)">
-            <img src="https://i.ibb.co/GvLBLmjH/Screenshot-20260302-193100-Roblox-2.jpg" class="game-image">
-            <div class="game-info"><h3>Sobreviviendo lava</h3><p style="color:#00ff88;">Normal</p></div>
-        </div>
-        <div class="game-card" onclick="openSteps('Obby oscilante para Brainrots!', 'loadstring(game:HttpGet(\'https://pastebin.com/raw/VJVkivY2\'))()', 6, 45)">
-            <img src="https://i.ibb.co/7tvsSqJn/Screenshot-20260307-115716-Roblox-2.jpg" class="game-image">
-            <div class="game-info"><h3>Obby oscilante para Brainrots!</h3><p style="color:#00ff88;">Normal</p></div>
-        </div>
-        <div class="game-card" onclick="openSteps('Encuentra quién abofeteó', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/scriptify12/EscapeTsunami/main/KeySystem-Slap2026.lua\', true))()', 6, 45)">
-            <img src="https://i.ibb.co/2055KkS9/Screenshot-20260303-103238-Whats-App-2.jpg" class="game-image">
-            <div class="game-info"><h3>Encuentra quién abofeteó</h3><p style="color:#00ff88;">Normal</p></div>
-        </div>
-        <div class="game-card" onclick="openSteps('Prisión Online', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/zenss555a/script/refs/heads/main/Prison-Life.lua\', true))()', 6, 45)">
-            <img src="https://i.ibb.co/rKXnr3qK/Screenshot-20260302-180245-Roblox-2.jpg" class="game-image">
-            <div class="game-info"><h3>Prisión Online</h3><p style="color:#00ff88;">Normal</p></div>
-        </div>
-        <div class="game-card" onclick="openSteps('MM2', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/spawnerscript/WymsHub/refs/heads/main/MM2.lua\'))()', 6, 45)">
-            <img src="https://i.ibb.co/v6MNsLZT/Screenshot-20260302-140141-Roblox-2.jpg" class="game-image">
-            <div class="game-info"><h3>MM2</h3><p style="color:#00ff88;">Normal</p></div>
-        </div>
-    </div>
-
-    <div id="cont-premium" class="container hidden">
-        <div class="game-card" style="border-color: #ffcc00;" onclick="openSteps('Roba un Brainrot', 'loadstring(game:HttpGet(\'https://rawscripts.net/raw/SOON-Steal-a-Brainrot-Chili-Hub-keyless-57764\'))()', 8, 60)">
-            <img src="https://i.ibb.co/4wPY5Jj5/Screenshot-20260303-115423-Roblox-2.jpg" class="game-image">
-            <div class="game-info"><h3>Roba un Brainrot</h3><p style="color:#ffcc00;">⭐ PREMIUM (8 Botones + 60s) ⭐</p></div>
-        </div>
-        <div class="game-card" style="border-color: #ffcc00;" onclick="openSteps('Rivales PREMIUM', 'loadstring(game:HttpGet(\'https://pastebin.com/raw/aN4VMhvP\'))()', 8, 60)">
-            <img src="https://i.ibb.co/k2G6nbnH/Screenshot-20260302-140132-Roblox-2.jpg" class="game-image">
-            <div class="game-info"><h3>Rivales (PREMIUM)</h3><p style="color:#ffcc00;">8 Botones + 60 seg</p></div>
-        </div>
-        <div class="game-card" style="border-color: #ffcc00;" onclick="openSteps('Duelos PREMIUM', 'loadstring(game:HttpGet(\'https://raw.githubusercontent.com/Rysted/scripts/main/MurderersVSSheriffs.lua\'))()', 8, 60)">
-            <img src="https://i.ibb.co/bgKfP41G/Screenshot-20260302-140119-Roblox-2.jpg" class="game-image">
-            <div class="game-info"><h3>Duelos (PREMIUM)</h3><p style="color:#ffcc00;">8 Botones + 60 seg</p></div>
-        </div>
-    </div>
+    <div id="cont-free" class="container"></div>
+    <div id="cont-premium" class="container hidden"></div>
 
     <div id="step-system">
         <button class="back-btn" onclick="location.reload()">← VOLVER</button>
@@ -137,14 +101,11 @@
     </div>
 
     <script>
-        // EFECTO DE CARGA CONTROLADO
         window.addEventListener('load', function() {
             const overlay = document.getElementById('fade-overlay');
             setTimeout(() => {
                 overlay.style.opacity = '0';
-                setTimeout(() => { 
-                    overlay.style.display = 'none'; 
-                }, 1200);
+                setTimeout(() => { overlay.style.display = 'none'; }, 1200);
             }, 1500); 
         });
 
@@ -169,11 +130,10 @@
                     
                     const scriptB64 = btoa(unescape(encodeURIComponent(scriptRaw)));
                     const isPremium = version && version.toLowerCase() === 'premium';
-                    const posicion = orden && orden.toLowerCase() === 'arriba' ? 'afterbegin' : 'beforeend';
-                    const tieneAnuncios = anuncios && anuncios.toLowerCase() === 'no' ? 'false' : 'true';
+                    const tieneAnuncios = (anuncios && anuncios.toLowerCase() === 'no') ? false : true;
 
-                    const card = `
-                        <div class="game-card" style="${isPremium ? 'border-color: #ffcc00;' : ''}" 
+                    const cardHtml = `
+                        <div class="game-card" id="card-${nombre.replace(/\s+/g, '')}" style="${isPremium ? 'border-color: #ffcc00;' : ''}" 
                              onclick="openSteps('${nombre}', '${scriptB64}', ${isPremium ? 8 : 6}, ${isPremium ? 60 : 45}, true, ${tieneAnuncios})">
                             <img src="${imagen}" class="game-image">
                             <div class="game-info">
@@ -182,13 +142,33 @@
                             </div>
                         </div>`;
 
-                    if (isPremium) { 
-                        document.getElementById('cont-premium').insertAdjacentHTML(posicion, card); 
-                    } else { 
-                        document.getElementById('cont-free').insertAdjacentHTML(posicion, card); 
+                    const container = document.getElementById(isPremium ? 'cont-premium' : 'cont-free');
+                    const instruccion = orden ? orden.toLowerCase() : "";
+
+                    if (instruccion.includes("arriba de ")) {
+                        let targetName = instruccion.replace("arriba de ", "").split(" en ")[0].replace(/\s+/g, '');
+                        let targetCard = document.getElementById("card-" + targetName);
+                        if (targetCard) { targetCard.insertAdjacentHTML('beforebegin', cardHtml); } 
+                        else { container.insertAdjacentHTML('afterbegin', cardHtml); }
+                    } 
+                    else if (instruccion.includes("abajo de ")) {
+                        let targetName = instruccion.replace("abajo de ", "").split(" en ")[0].replace(/\s+/g, '');
+                        let targetCard = document.getElementById("card-" + targetName);
+                        if (targetCard) { targetCard.insertAdjacentHTML('afterend', cardHtml); } 
+                        else { container.insertAdjacentHTML('beforeend', cardHtml); }
+                    } 
+                    else if (instruccion === 'arriba') {
+                        container.insertAdjacentHTML('afterbegin', cardHtml);
+                    } 
+                    else {
+                        container.insertAdjacentHTML('beforeend', cardHtml);
                     }
                 });
-            } catch (e) { console.log("Error al cargar datos externos."); }
+            } catch (e) { 
+                console.log("Error al cargar datos."); 
+                const overlay = document.getElementById('fade-overlay');
+                if(overlay) overlay.style.display = 'none';
+            }
         }
 
         function toggleTutorial() {
@@ -207,7 +187,6 @@
 
         function openSteps(name, script, clicksNeeded, seconds, isExternal = false, conAnuncios = true) {
             currentScript = isExternal ? decodeURIComponent(escape(atob(script))) : script;
-            
             if (!conAnuncios) {
                 document.getElementById('step-system').style.display = 'flex';
                 document.getElementById('status-label').innerText = name;
@@ -217,16 +196,13 @@
                 document.getElementById('script-box').innerText = currentScript;
                 return;
             }
-
             neededClicks = clicksNeeded; maxTime = seconds; time = seconds; clicks = 0;
             document.getElementById('step-system').style.display = 'flex';
             document.getElementById('status-label').innerText = name;
             document.getElementById('group-1').classList.remove('hidden');
             document.getElementById('final').classList.add('hidden');
             let grid = document.getElementById('group-1'); grid.innerHTML = "";
-            for(let i=1; i<=neededClicks; i++) { 
-                grid.innerHTML += `<button class="smart-btn" onclick="handleAd(this)">Abrir Enlace ${i}</button>`; 
-            }
+            for(let i=1; i<=neededClicks; i++) { grid.innerHTML += `<button class="smart-btn" onclick="handleAd(this)">Abrir Enlace ${i}</button>`; }
         }
 
         function handleAd(btn) {
@@ -236,16 +212,8 @@
             window.open(adLink, '_blank'); 
             clicks++;
             if(clicks >= neededClicks) {
-                if(maxTime > 0) { 
-                    document.getElementById('group-1').classList.add('hidden'); 
-                    document.getElementById('group-timer').classList.remove('hidden'); 
-                    startT(); 
-                }
-                else { 
-                    document.getElementById('group-1').classList.add('hidden'); 
-                    document.getElementById('final').classList.remove('hidden'); 
-                    document.getElementById('script-box').innerText = currentScript; 
-                }
+                if(maxTime > 0) { document.getElementById('group-1').classList.add('hidden'); document.getElementById('group-timer').classList.remove('hidden'); startT(); }
+                else { document.getElementById('group-1').classList.add('hidden'); document.getElementById('final').classList.remove('hidden'); document.getElementById('script-box').innerText = currentScript; }
             }
         }
 
