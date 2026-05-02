@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El mejor centro de Scripts - Steven Studio</title>
     <style>
+        /* --- CAPA DE MANTENIMIENTO (BLOQUEO TEMPORAL) --- */
+        #mantenimiento-bloqueo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 20000; /* Por encima de todo */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .msg-amarillo {
+            color: #ffcc00; /* Amarillo */
+            font-size: 2rem;
+            font-weight: bold;
+            border: 3px solid #ffcc00;
+            padding: 20px;
+            text-transform: uppercase;
+        }
+        /* ----------------------------------------------- */
+
         /* --- PANTALLA DE CARGA NEGRO TOTAL --- */
         #fade-overlay {
             position: fixed;
@@ -62,6 +87,11 @@
     </style>
 </head>
 <body>
+
+    <div id="mantenimiento-bloqueo">
+        <div class="msg-amarillo">EN MANTENIMIENTO</div>
+        <p style="color: #666; margin-top: 15px;">Regresamos pronto con mejoras.</p>
+    </div>
 
     <div id="fade-overlay">
         <h2 style="color: #00ff88; font-family: monospace;">STEVEN STUDIO...</h2>
