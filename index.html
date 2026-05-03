@@ -5,102 +5,126 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El mejor centro de Scripts - Steven Studio</title>
     <style>
-        /* --- CAPA DE MANTENIMIENTO (BLOQUEO TEMPORAL) --- */
-        #mantenimiento-bloqueo {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            z-index: 20000; /* Por encima de todo */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
+        /* --- ESTILOS DE INTERACCIÓN STEVEN STUDIO --- */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
         }
-        .msg-amarillo {
-            color: #ffcc00; /* Amarillo */
-            font-size: 2rem;
-            font-weight: bold;
-            border: 3px solid #ffcc00;
-            padding: 20px;
-            text-transform: uppercase;
-        }
-        /* ----------------------------------------------- */
 
-        /* --- PANTALLA DE CARGA NEGRO TOTAL --- */
+        /* Animación solo si no está bloqueado */
+        .game-card:not(.blocked):active {
+            transform: scale(0.94);
+            border-color: #00ff88 !important; 
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            transition: transform 0.1s ease;
+        }
+
+        .game-card {
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            background: #111; 
+            border: 1px solid #222; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            overflow: hidden; 
+            width: 100%;
+        }
+
+        /* Estilo para tarjetas bloqueadas */
+        .game-card.blocked {
+            cursor: not-allowed;
+            opacity: 0.8;
+            filter: grayscale(0.5);
+        }
+
+        .smart-btn:active, .tutorial-btn:active, .report-btn:active, .copy-btn:active {
+            transform: scale(0.95);
+        }
+
         #fade-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: #000000;
             z-index: 10000;
             opacity: 1;
             transition: opacity 1.2s ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: all;
+            display: flex; align-items: center; justify-content: center;
         }
-        /* -------------------------------------- */
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
         body { background: #050505; color: #fff; text-align: center; }
-        
         .header-title { padding: 15px; background: #111; border-bottom: 2px solid #00ff88; color: #00ff88; font-weight: bold; font-size: 1.2rem; }
-
         .navbar { height: 50px; background: #111; border-bottom: 1px solid #222; display: flex; position: sticky; width: 100%; top: 0; z-index: 1000; }
         .nav-tab { flex: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; color: #555; font-size: 0.8rem; }
         .nav-tab.active { color: #00ff88; border-bottom: 2px solid #00ff88; background: #161616; }
         .nav-tab.premium-active { color: #ffcc00; border-bottom: 2px solid #ffcc00; background: #1a1500; }
-
+        
         .tutorial-btn { background: #ff0000; color: #fff; padding: 12px; width: 90%; max-width: 400px; margin: 15px auto; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; display: block; }
-        
         .report-btn { background: #444; color: #fff; padding: 12px; width: 90%; max-width: 400px; margin: 0 auto 15px auto; border-radius: 8px; font-weight: bold; cursor: pointer; border: 1px solid #666; display: block; text-decoration: none; font-size: 0.9rem; }
-
-        #video-box { display: none; margin-bottom: 20px; width: 260px; margin-left: auto; margin-right: auto; }
-        iframe { width: 260px; aspect-ratio: 9/16; border-radius: 10px; border: 1px solid #333; }
-
-        .container { padding: 15px; display: flex; flex-direction: column; gap: 20px; max-width: 500px; margin: 0 auto; }
-        .game-card { background: #111; border: 1px solid #222; border-radius: 10px; cursor: pointer; overflow: hidden; width: 100%; position: relative; }
         
+        #video-box { display: none; margin-bottom: 20px; width: 260px; margin: 0 auto; }
+        iframe { width: 260px; aspect-ratio: 9/16; border-radius: 10px; border: 1px solid #333; }
+        
+        .container { padding: 15px; display: flex; flex-direction: column; gap: 20px; max-width: 500px; margin: 0 auto; }
         .game-image { width: 100%; height: auto; display: block; }
         .game-info { padding: 12px; font-size: 0.9rem; }
 
+        /* Estilos de Avisos (Botones informativos) */
+        .status-badge {
+            display: block;
+            width: 90%;
+            margin: 10px auto;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        .badge-red { background: #ff0000; color: white; border: 1px solid #700; }
+        .badge-yellow { background: #ffcc00; color: black; border: 1px solid #990; }
+
+        /* Mantenimiento Global */
+        #main-maintenance {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
         #step-system { display: none; position: fixed; inset: 0; background: #050505; z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
         .btn-grid { display: grid; gap: 8px; width: 100%; max-width: 260px; }
-        .smart-btn { background: #1a1a1a; border: 1px solid #333; color: #fff; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .smart-btn.completed { background: #333 !important; color: #777 !important; border: 1px solid #444 !important; cursor: not-allowed; }
-
+        .smart-btn { background: #1a1a1a; border: 1px solid #333; color: #fff; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }
         .progress-circle { position: relative; width: 140px; height: 140px; border-radius: 50%; background: conic-gradient(#00ff88 0%, #222 0%); display: flex; align-items: center; justify-content: center; margin: 15px 0; }
         .progress-circle::before { content: ""; position: absolute; width: 115px; height: 115px; background: #050505; border-radius: 50%; }
         .timer-num { position: relative; font-size: 2rem; font-weight: bold; }
-
         .back-btn { position: absolute; top: 15px; left: 15px; background: none; border: 1px solid #333; color: #666; padding: 5px 10px; border-radius: 4px; }
         .hidden { display: none !important; }
-        code { display: block; background: #000; padding: 15px; border: 1px dashed #00ff88; margin-top: 15px; font-size: 0.7rem; color: #00ff88; word-break: break-all; }
+        code { display: block; background: #000; padding: 15px; border: 1px dashed #00ff88; margin-top: 15px; font-size: 0.7rem; color: #00ff88; word-break: break-all; white-space: pre-wrap; text-align: left; }
         .copy-btn { background: #00ff88; color: #000; border: none; padding: 10px; border-radius: 5px; font-weight: bold; width: 100%; max-width: 260px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="mantenimiento-bloqueo">
-        <div class="msg-amarillo">EN MANTENIMIENTO</div>
-        <p style="color: #666; margin-top: 15px;">Regresamos pronto con mejoras.</p>
-    </div>
-
     <div id="fade-overlay">
         <h2 style="color: #00ff88; font-family: monospace;">STEVEN STUDIO...</h2>
+    </div>
+
+    <div id="main-maintenance">
+        <h1 style="color: #00ff88; margin-bottom: 20px;">MANTENIMIENTO</h1>
+        <p style="color: #aaa;">Vuelve pronto para más cosas, la página está mejorando.</p>
+        <div style="margin-top: 30px; border: 1px solid #00ff88; padding: 10px; color: #00ff88;">STEVEN STUDIO</div>
     </div>
 
     <div class="header-title">Página de Yamil y Steven (Steven Studio)</div>
 
     <button class="tutorial-btn" onclick="toggleTutorial()">🎥 ¿CÓMO PASAR LA PÁGINA? (TUTORIAL)</button>
-    
     <a href="https://steven59999zzzboki-star.github.io/Reportes/" class="report-btn">🚩 REPORTAR FALLO / SCRIPT</a>
 
     <div id="video-box">
@@ -124,7 +148,7 @@
             <button id="pause-btn" class="smart-btn hidden" style="background:#00ff88; color:#000;" onclick="resume()">CONTINUAR (Paso 1/2)</button>
         </div>
         <div id="final" class="hidden">
-            <h2 style="color:gold;">¡DESBLOQUEADO!</h2>
+            <h2 id="final-status" style="color:gold;">¡DESBLOQUEADO!</h2>
             <code id="script-box"></code>
             <button class="copy-btn" onclick="copyText()">COPIAR SCRIPT</button>
         </div>
@@ -149,26 +173,63 @@
             try {
                 const response = await fetch(CSV_URL);
                 const data = await response.text();
-                const rows = data.split("\n").slice(1);
+                const rows = data.split("\n");
                 
-                rows.forEach(row => {
+                const avisos = [];
+                rows.slice(1).forEach(row => {
+                    const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                    if (cols[6]) {
+                        let txt = cols[6].trim().toLowerCase().replace(/"/g, '');
+                        if(txt) avisos.push(txt);
+                    }
+                });
+
+                if (avisos.includes("mantenimiento página")) {
+                    document.getElementById('main-maintenance').style.display = 'flex';
+                    return;
+                }
+
+                rows.slice(1).forEach(row => {
                     const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
                     if (cols.length < 3) return;
                     
-                    let [nombre, imagen, scriptRaw, version, orden, anuncios] = cols.map(c => c.replace(/^"|"$/g, '').trim());
+                    let cleanCols = cols.map(c => {
+                        let val = c.trim();
+                        if (val.startsWith('"') && val.endsWith('"')) { val = val.substring(1, val.length - 1); }
+                        return val.replace(/""/g, '"');
+                    });
+
+                    let [nombre, imagen, scriptRaw, version, orden, anuncios] = cleanCols;
                     if(!nombre || !scriptRaw) return;
                     
                     const scriptB64 = btoa(unescape(encodeURIComponent(scriptRaw)));
                     const isPremium = version && version.toLowerCase() === 'premium';
                     const tieneAnuncios = (anuncios && anuncios.toLowerCase() === 'no') ? false : true;
 
+                    let extraHTML = "";
+                    let isBlocked = false;
+                    let nombreMin = nombre.toLowerCase();
+                    let seccion = isPremium ? "premium" : "normal";
+
+                    avisos.forEach(aviso => {
+                        if (aviso.includes("no funciona") && aviso.includes(nombreMin) && aviso.includes(seccion)) {
+                            extraHTML = `<div class="status-badge badge-red">ESTE SCRIPT VA A SER ELIMINADO PORQUE YA NO FUNCIONA</div>`;
+                            isBlocked = true;
+                        } else if (aviso.includes("mantenimiento") && aviso.includes(nombreMin) && aviso.includes(seccion)) {
+                            extraHTML = `<div class="status-badge badge-yellow">EN MANTENIMIENTO: BUSCANDO OTRO SCRIPT</div>`;
+                            isBlocked = true;
+                        }
+                    });
+
                     const cardHtml = `
-                        <div class="game-card" id="card-${nombre.replace(/\s+/g, '')}" style="${isPremium ? 'border-color: #ffcc00;' : ''}" 
-                             onclick="openSteps('${nombre}', '${scriptB64}', ${isPremium ? 8 : 6}, ${isPremium ? 60 : 45}, true, ${tieneAnuncios})">
+                        <div class="game-card ${isBlocked ? 'blocked' : ''}" id="card-${nombre.replace(/\s+/g, '')}" 
+                             style="${isPremium ? 'border-color: #ffcc00;' : ''}" 
+                             onclick="${isBlocked ? '' : `delayOpenSteps('${nombre.replace(/'/g, "\\'")}', '${scriptB64}', ${isPremium ? 8 : 6}, ${isPremium ? 60 : 45}, true, ${tieneAnuncios})`}">
                             <img src="${imagen}" class="game-image">
                             <div class="game-info">
                                 <h3>${nombre}</h3>
                                 <p style="color:${isPremium ? '#ffcc00' : '#00ff88'};">${isPremium ? '⭐ PREMIUM ⭐' : 'Normal'}</p>
+                                ${extraHTML}
                             </div>
                         </div>`;
 
@@ -180,25 +241,24 @@
                         let targetCard = document.getElementById("card-" + targetName);
                         if (targetCard) { targetCard.insertAdjacentHTML('beforebegin', cardHtml); } 
                         else { container.insertAdjacentHTML('afterbegin', cardHtml); }
-                    } 
-                    else if (instruccion.includes("abajo de ")) {
+                    } else if (instruccion.includes("abajo de ")) {
                         let targetName = instruccion.replace("abajo de ", "").split(" en ")[0].replace(/\s+/g, '');
                         let targetCard = document.getElementById("card-" + targetName);
                         if (targetCard) { targetCard.insertAdjacentHTML('afterend', cardHtml); } 
                         else { container.insertAdjacentHTML('beforeend', cardHtml); }
-                    } 
-                    else if (instruccion === 'arriba') {
+                    } else if (instruccion === 'arriba') {
                         container.insertAdjacentHTML('afterbegin', cardHtml);
-                    } 
-                    else {
+                    } else {
                         container.insertAdjacentHTML('beforeend', cardHtml);
                     }
                 });
             } catch (e) { 
-                console.log("Error al cargar datos."); 
-                const overlay = document.getElementById('fade-overlay');
-                if(overlay) overlay.style.display = 'none';
+                console.log("Error."); 
             }
+        }
+
+        function delayOpenSteps(name, script, clicksNeeded, seconds, isExternal, conAnuncios) {
+            setTimeout(() => { openSteps(name, script, clicksNeeded, seconds, isExternal, conAnuncios); }, 250);
         }
 
         function toggleTutorial() {
@@ -217,9 +277,9 @@
 
         function openSteps(name, script, clicksNeeded, seconds, isExternal = false, conAnuncios = true) {
             currentScript = isExternal ? decodeURIComponent(escape(atob(script))) : script;
+            document.getElementById('step-system').style.display = 'flex';
+            document.getElementById('status-label').innerText = name;
             if (!conAnuncios) {
-                document.getElementById('step-system').style.display = 'flex';
-                document.getElementById('status-label').innerText = name;
                 document.getElementById('group-1').classList.add('hidden');
                 document.getElementById('group-timer').classList.add('hidden');
                 document.getElementById('final').classList.remove('hidden');
@@ -227,9 +287,8 @@
                 return;
             }
             neededClicks = clicksNeeded; maxTime = seconds; time = seconds; clicks = 0;
-            document.getElementById('step-system').style.display = 'flex';
-            document.getElementById('status-label').innerText = name;
             document.getElementById('group-1').classList.remove('hidden');
+            document.getElementById('group-timer').classList.add('hidden');
             document.getElementById('final').classList.add('hidden');
             let grid = document.getElementById('group-1'); grid.innerHTML = "";
             for(let i=1; i<=neededClicks; i++) { grid.innerHTML += `<button class="smart-btn" onclick="handleAd(this)">Abrir Enlace ${i}</button>`; }
