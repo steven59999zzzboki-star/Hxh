@@ -14,7 +14,6 @@
             -webkit-tap-highlight-color: transparent; 
         }
 
-        /* Animación solo si no está bloqueado */
         .game-card:not(.blocked):active {
             transform: scale(0.94);
             border-color: #00ff88 !important; 
@@ -33,7 +32,6 @@
             width: 100%;
         }
 
-        /* Estilo para tarjetas bloqueadas */
         .game-card.blocked {
             cursor: not-allowed;
             opacity: 0.8;
@@ -71,7 +69,6 @@
         .game-image { width: 100%; height: auto; display: block; }
         .game-info { padding: 12px; font-size: 0.9rem; }
 
-        /* Estilos de Avisos (Botones informativos) */
         .status-badge {
             display: block;
             width: 90%;
@@ -85,7 +82,6 @@
         .badge-red { background: #ff0000; color: white; border: 1px solid #700; }
         .badge-yellow { background: #ffcc00; color: black; border: 1px solid #990; }
 
-        /* Mantenimiento Global */
         #main-maintenance {
             display: none;
             position: fixed;
@@ -101,13 +97,13 @@
         #step-system { display: none; position: fixed; inset: 0; background: #050505; z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
         .btn-grid { display: grid; gap: 8px; width: 100%; max-width: 260px; }
         .smart-btn { background: #1a1a1a; border: 1px solid #333; color: #fff; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        .progress-circle { position: relative; width: 140px; height: 140px; border-radius: 50%; background: conic-gradient(#00ff88 0%, #222 0%); display: flex; align-items: center; justify-content: center; margin: 15px 0; }
-        .progress-circle::before { content: ""; position: absolute; width: 115px; height: 115px; background: #050505; border-radius: 50%; }
-        .timer-num { position: relative; font-size: 2rem; font-weight: bold; }
+        .smart-btn.completed { border-color: #00ff88; color: #00ff88; }
         .back-btn { position: absolute; top: 15px; left: 15px; background: none; border: 1px solid #333; color: #666; padding: 5px 10px; border-radius: 4px; }
         .hidden { display: none !important; }
         code { display: block; background: #000; padding: 15px; border: 1px dashed #00ff88; margin-top: 15px; font-size: 0.7rem; color: #00ff88; word-break: break-all; white-space: pre-wrap; text-align: left; }
         .copy-btn { background: #00ff88; color: #000; border: none; padding: 10px; border-radius: 5px; font-weight: bold; width: 100%; max-width: 260px; margin-top: 10px; }
+        
+        #phase-indicator { color: #00ff88; font-size: 1.1rem; margin-bottom: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -122,7 +118,7 @@
         <div style="margin-top: 30px; border: 1px solid #00ff88; padding: 10px; color: #00ff88;">STEVEN STUDIO</div>
     </div>
 
-    <div class="header-title">Página de Yamil y Steven (Steven Studio)</div>
+    <div class="header-title">El mejor centro de Scripts (Steven Studio)</div>
 
     <button class="tutorial-btn" onclick="toggleTutorial()">🎥 ¿CÓMO PASAR LA PÁGINA? (TUTORIAL)</button>
     <a href="https://steven59999zzzboki-star.github.io/Reportes/" class="report-btn">🚩 REPORTAR FALLO / SCRIPT</a>
@@ -142,11 +138,9 @@
     <div id="step-system">
         <button class="back-btn" onclick="location.reload()">← VOLVER</button>
         <h2 id="status-label">PASOS</h2>
+        <div id="phase-indicator">FASE 1</div>
         <div id="group-1" class="btn-grid"></div>
-        <div id="group-timer" class="hidden">
-            <div class="progress-circle" id="circle"><span class="timer-num" id="secs">0</span></div>
-            <button id="pause-btn" class="smart-btn hidden" style="background:#00ff88; color:#000;" onclick="resume()">CONTINUAR (Paso 1/2)</button>
-        </div>
+        <div id="group-2" class="btn-grid hidden"></div>
         <div id="final" class="hidden">
             <h2 id="final-status" style="color:gold;">¡DESBLOQUEADO!</h2>
             <code id="script-box"></code>
@@ -167,7 +161,9 @@
         const CSV_URL = VINCULO_EXCEL.split('/edit')[0] + "/export?format=csv&cachebuster=" + Date.now();
         const adLink = "Https://omg10.com/4/10022394";
         
-        let clicks = 0, time = 0, maxTime = 0, isPaused = false, currentScript = "", neededClicks = 0, resumeClicks = 0;
+        let clicks = 0, currentScript = "", neededClicks = 0;
+        let clickTime = 0, lastBtn = null, currentWaitLimit = 8;
+        let isSecondPhase = false;
 
         async function loadExternalScripts() {
             try {
@@ -206,6 +202,11 @@
                     const isPremium = version && version.toLowerCase() === 'premium';
                     const tieneAnuncios = (anuncios && anuncios.toLowerCase() === 'no') ? false : true;
 
+                    const config = {
+                        btn: isPremium ? 7 : 5,
+                        wait: isPremium ? 8 : 6
+                    };
+
                     let extraHTML = "";
                     let isBlocked = false;
                     let nombreMin = nombre.toLowerCase();
@@ -224,7 +225,7 @@
                     const cardHtml = `
                         <div class="game-card ${isBlocked ? 'blocked' : ''}" id="card-${nombre.replace(/\s+/g, '')}" 
                              style="${isPremium ? 'border-color: #ffcc00;' : ''}" 
-                             onclick="${isBlocked ? '' : `delayOpenSteps('${nombre.replace(/'/g, "\\'")}', '${scriptB64}', ${isPremium ? 8 : 6}, ${isPremium ? 60 : 45}, true, ${tieneAnuncios})`}">
+                             onclick="${isBlocked ? '' : `delayOpenSteps('${nombre.replace(/'/g, "\\'")}', '${scriptB64}', ${config.btn}, true, ${tieneAnuncios}, ${config.wait})`}">
                             <img src="${imagen}" class="game-image">
                             <div class="game-info">
                                 <h3>${nombre}</h3>
@@ -257,15 +258,20 @@
             }
         }
 
-        function delayOpenSteps(name, script, clicksNeeded, seconds, isExternal, conAnuncios) {
-            setTimeout(() => { openSteps(name, script, clicksNeeded, seconds, isExternal, conAnuncios); }, 250);
+        function delayOpenSteps(name, script, clicksNeeded, isExternal, conAnuncios, waitLimit) {
+            setTimeout(() => { openSteps(name, script, clicksNeeded, isExternal, conAnuncios, waitLimit); }, 250);
         }
 
         function toggleTutorial() {
             const box = document.getElementById('video-box');
             const player = document.getElementById('player');
-            if (box.style.display === 'block') { box.style.display = 'none'; player.innerHTML = ''; } 
-            else { box.style.display = 'block'; player.innerHTML = '<iframe src="https://www.youtube.com/embed/CwpTA4FQ-Ko?autoplay=1&start=41&controls=0&modestbranding=1" title="Tutorial" allow="autoplay"></iframe>'; }
+            if (box.style.display === 'block') { 
+                box.style.display = 'none'; 
+                player.innerHTML = ''; // Detiene el video al cerrar
+            } else { 
+                box.style.display = 'block'; 
+                player.innerHTML = '<iframe src="https://www.youtube.com/embed/RakJTi5vwSk?autoplay=1" title="Tutorial" allow="autoplay"></iframe>'; 
+            }
         }
 
         function showTab(type) {
@@ -275,52 +281,78 @@
             document.getElementById('tab-premium').className = 'nav-tab' + (type === 'premium' ? ' premium-active' : '');
         }
 
-        function openSteps(name, script, clicksNeeded, seconds, isExternal = false, conAnuncios = true) {
+        function openSteps(name, script, clicksNeeded, isExternal, conAnuncios, waitLimit) {
             currentScript = isExternal ? decodeURIComponent(escape(atob(script))) : script;
+            currentWaitLimit = waitLimit;
             document.getElementById('step-system').style.display = 'flex';
             document.getElementById('status-label').innerText = name;
+            document.getElementById('phase-indicator').innerText = "FASE 1";
+            
             if (!conAnuncios) {
                 document.getElementById('group-1').classList.add('hidden');
-                document.getElementById('group-timer').classList.add('hidden');
+                document.getElementById('group-2').classList.add('hidden');
+                document.getElementById('phase-indicator').classList.add('hidden');
                 document.getElementById('final').classList.remove('hidden');
                 document.getElementById('script-box').innerText = currentScript;
                 return;
             }
-            neededClicks = clicksNeeded; maxTime = seconds; time = seconds; clicks = 0;
+
+            neededClicks = clicksNeeded; clicks = 0; isSecondPhase = false;
+            document.getElementById('phase-indicator').classList.remove('hidden');
             document.getElementById('group-1').classList.remove('hidden');
-            document.getElementById('group-timer').classList.add('hidden');
+            document.getElementById('group-2').classList.add('hidden');
             document.getElementById('final').classList.add('hidden');
-            let grid = document.getElementById('group-1'); grid.innerHTML = "";
-            for(let i=1; i<=neededClicks; i++) { grid.innerHTML += `<button class="smart-btn" onclick="handleAd(this)">Abrir Enlace ${i}</button>`; }
+            
+            generateButtons('group-1', neededClicks, "Paso");
+        }
+
+        function generateButtons(groupId, count, labelPrefix) {
+            let grid = document.getElementById(groupId); 
+            grid.innerHTML = "";
+            for(let i=1; i<=count; i++) { 
+                grid.innerHTML += `<button class="smart-btn" onclick="handleAd(this)">${labelPrefix} ${i}</button>`; 
+            }
         }
 
         function handleAd(btn) {
             if(btn.classList.contains('completed')) return;
-            btn.classList.add('completed');
-            btn.innerText = "✅ ABIERTO";
+            lastBtn = btn;
+            clickTime = Date.now();
             window.open(adLink, '_blank'); 
-            clicks++;
-            if(clicks >= neededClicks) {
-                if(maxTime > 0) { document.getElementById('group-1').classList.add('hidden'); document.getElementById('group-timer').classList.remove('hidden'); startT(); }
-                else { document.getElementById('group-1').classList.add('hidden'); document.getElementById('final').classList.remove('hidden'); document.getElementById('script-box').innerText = currentScript; }
-            }
+            btn.innerText = "⏳ Verificando...";
         }
 
-        function startT() {
-            document.getElementById('secs').innerText = time;
-            let timer = setInterval(() => {
-                if(!isPaused) {
-                    time--;
-                    let p = ((maxTime-time)/maxTime)*100;
-                    document.getElementById('circle').style.background = `conic-gradient(#00ff88 ${p}%, #222 ${p}%)`;
-                    document.getElementById('secs').innerText = time;
-                    if(time % 10 === 0 && time > 0) { isPaused = true; resumeClicks = 0; document.getElementById('secs').classList.add('hidden'); document.getElementById('pause-btn').classList.remove('hidden'); }
-                    if(time <= 0) { clearInterval(timer); document.getElementById('group-timer').classList.add('hidden'); document.getElementById('final').classList.remove('hidden'); document.getElementById('script-box').innerText = currentScript; }
+        window.onfocus = function() {
+            if(lastBtn && clickTime > 0) {
+                let secondsPassed = (Date.now() - clickTime) / 1000;
+                if(secondsPassed >= currentWaitLimit) {
+                    lastBtn.classList.add('completed');
+                    lastBtn.innerText = "✅ COMPLETADO";
+                    clicks++;
+                    
+                    if(clicks >= neededClicks) {
+                        if(!isSecondPhase) {
+                            isSecondPhase = true;
+                            clicks = 0;
+                            document.getElementById('phase-indicator').innerText = "FASE 2";
+                            document.getElementById('group-1').classList.add('hidden');
+                            document.getElementById('group-2').classList.remove('hidden');
+                            generateButtons('group-2', neededClicks, "Verificación");
+                        } else {
+                            document.getElementById('phase-indicator').classList.add('hidden');
+                            document.getElementById('group-2').classList.add('hidden');
+                            document.getElementById('final').classList.remove('hidden');
+                            document.getElementById('script-box').innerText = currentScript;
+                        }
+                    }
+                } else {
+                    alert("⚠️ ¡Debes esperar al menos " + currentWaitLimit + " segundos en el enlace!");
+                    lastBtn.innerText = "Reintentar Paso";
                 }
-            }, 750);
-        }
+                lastBtn = null; clickTime = 0;
+            }
+        };
 
-        function resume() { window.open(adLink, '_blank'); resumeClicks++; if(resumeClicks >= 2) { isPaused = false; document.getElementById('secs').classList.remove('hidden'); document.getElementById('pause-btn').classList.add('hidden'); } }
         function copyText() { navigator.clipboard.writeText(currentScript); alert("¡Copiado!"); }
 
         loadExternalScripts();
